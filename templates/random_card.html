@@ -1,0 +1,87 @@
+{% extends "layouts/base.html" %}
+
+{% load static %}
+{% block content %}
+
+<div class="cardContainer">
+
+    <div class="leftSectionContainer">
+
+        <div class="cardImageSection">
+
+            <img id="img_card_random" src="{{ card.card_images.0.image_url }}" alt="{{ card.name }}">
+            
+        </div>
+
+        <div class="cardLimited">
+            <div>cartas limitadas</div>
+        </div>
+
+    </div>
+
+    <div class="rightSectionContainer">
+
+        <div class="cardDescriptionsection" >
+            <div>
+                <div class="card-name">
+                    <h3>{{ card.name }}</h3>
+                </div>
+        
+                <div class="card-desc">
+                     {{ card.desc }}
+                </div>
+            </div>
+        </div>
+    
+        <div class="cardAtributes">
+
+                <div>
+                    {% if card.attribute %}
+                    <strong>ATRIBUTE:</strong> {{ card.attribute }}
+                    {% endif %}
+                </div>
+
+                <div>
+                    {% if card.race %}
+                        <strong>TYPE:</strong> {{ card.race }}
+                    {% endif %}
+                </div>
+
+                <div>
+                    {% if card.archetype %}
+                        <strong>ARQUETYPE:</strong> {{ card.archetype }}
+                    {% endif %}
+                </div>
+       
+                <div>
+                    {% if card.level %}
+                        <strong>LEVEL:</strong> {{ card.level }}
+                    {% endif %}
+                </div>
+                                   
+                <div>
+                    {% if card.atk %}
+                        <strong>ATK:</strong> {{ card.atk }}
+                    {% endif %}
+                </div>
+
+                <div>
+                    {% if card.def %}
+                        <strong>DEF:</strong> {{ card.def }}
+                    {% endif %}
+                </div>
+
+                {% comment %} Filtrado de rareza de carta {% endcomment %}
+                {% comment %} <div>
+                    {% filtrar_valor card.card_sets 'valor_deseado' %}
+                </div> {% endcomment %}
+                
+                
+
+                <div>
+                    <strong>TCG Precio:</strong> {{ card.card_prices.0.tcgplayer_price }}$
+                </div>
+        </div>
+
+    </div>
+{% endblock %}

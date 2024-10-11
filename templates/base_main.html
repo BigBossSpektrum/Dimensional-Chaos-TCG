@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+<<<<<<< HEAD
+=======
+<link rel="stylesheet" href="{% static 'css/styles_base.css' %}">
+
+<!-- <div class="column">
+    <div class="column1">
+        <span>Home</span>
+        <div>
+            <a href="">link 1</a>
+        </div>
+    </div>
+    <div class="column1">
+        <span>Soon</span> <span>Lastest</span>
+        <div>
+            <a href="">link 1</a>
+        </div>
+    </div>
+    <div class="column2">
+        <span>New Decklists</span>
+        <div>
+            <a href="">link 1</a>
+        </div>
+    </div>
+    <div class="column3">
+        <span>Last Tournaments</span>
+        <div>
+            <a href="">link 1</a>
+        </div>
+    </div>
+</div> -->
+>>>>>>> parent of a40f91d (update)
+{% block content %}
+<h1>prueba</h1>
+<div id="cards-container">
+    {% if cards %}
+        {% for card in cards %}
+            <div class="card">
+                <a href="{{ card.ygoprodeck_url }}"><img src="{{ card.card_images.0.image_url }}" alt="{{ card.name }}"></a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No se pudieron obtener las cartas.</p>
+    {% endif %}
+</div>
+{% endblock %}

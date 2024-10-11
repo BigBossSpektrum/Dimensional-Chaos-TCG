@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    
+<section>
+    <div class="container">
+        <div class="login">
+            <form action="">
+                <h2>Iniciar Sesion</h2>
+                <div class="input-container">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" required>
+                    <label for="#">Email</label>
+                </div>
+                <div class="input-container">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" required>
+                    <label for="#">Password</label>
+                </div>
+                <div class="forgot">
+                    <label for="#">
+                        <input type="checkbox"> Recordar
+                        <a href="#">Olvide la contraseña</a>
+                    </label>
+                </div>
+                <div>
+                    <button>Acceder</button>
+                    <div class="register">
+                        <p>No tengo cuenta <a href="#">Crear una cuenta</a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>
+{% endblock content %}
+    

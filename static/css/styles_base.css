@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Jaro:opsz@6..72&family=Lobster&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+sidebar{
+    width: 100%;
+    height: 100%;
+}
+
+.wrapper{
+    display: grid;
+    grid-template-columns: 20rem 1fr; 
+}
+
+.mainMenu{
+    display: inline-flex;
+    display: flex;
+    flex-direction: row;
+    gap: 240px;
+    align-items: center;
+    padding: 15px 25px;
+    background-color: #1f1f1f;
+    max-width: 100hv;
+}
+
+.mainMenu_buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    padding-left: 40px;
+}
+
+#search{
+    width: 500px;
+    height: 35px;
+    border-radius: 15px;
+    border: none;
+    padding-left: 10px;
+    font-size: 15px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    opacity: 0.4;
+}
+
+.navbar_sidebar_style{
+    background-color: #2b2b2b;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-left: 10px;
+    font-size: 18px;
+    max-width: 100%;
+    min-height: 100vh;
+}
+
+.link_styledLink{
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-top: 10px;
+    padding-left: 14px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.link_styledMenu{
+    display: flex;
+    justify-content: space-between;
+}
+
+.link_name{
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: 15px;
+    margin-left: 15px;
+    font-size: 35px;
+}
+
+.btn-manager{
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding-left: 65px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-deck{
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding-left: 125px;
+    display: flex;
+    justify-content: center;
+}
+
+.link_logoLinked{
+    width: 50px;
+    border-radius: 50px;
+}
+
+.mainMenu_link{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 16px;
+}
+
+.mainMenu_styledLink{
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    margin-left: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5px;
+}
+
+.mainMenu_separador{
+    color: gray;
+    padding-left: 14px;
+    font-size: 15px;
+    font-weight: 800;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 800;
+}
+
+.column{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding-top: 20px;    
+    padding-left: 20px;
+    
+}
+
+.mainMenu_styledName{
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+
+.btn-login{
+    background-color: #555555;
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 15px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 800;
+    cursor: pointer;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.btn-login:hover{
+    background-color: #676770;
+}
+
+.btn-signup{
+    background-color: #3a86ff;
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 15px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.btn-signup:hover{
+    background-color: #206fee;
+}
+
+.content {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 0.1fr 1fr auto;
+}
+
+.mainMenu_title {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    color: #1f1f1f;
+    padding-left: 20px;
+}
+
+#cards-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+}
+.card {
+    text-align: center;
+    
+}
+img {
+    width: 100%;
+}
+
+.mainMenu_search {
+    display: flex;
+    align-items: center;
+}
+
+.mainMenu_search input[type="search"] {
+    padding: 10px;
+    border: none; /* Elimina los bordes */
+    border-radius: 25px; /* Borde redondeado */
+    outline: none; /* Elimina el borde al hacer clic */
+    background-color: #f2f2f2; /* Fondo del campo */
+    width: 450px;
+    box-sizing: border-box;
+    opacity: 0.8;
+}
+
+.mainMenu_search a {
+    margin-left: 10px; /* Espacio entre el input y el ícono */
+    text-decoration: none; /* Elimina el subrayado del enlace */
+}
+
+.mainMenu_search i {
+    font-size: 24px; /* Tamaño del ícono */
+    color: #ffffff; /* Color blanco para el ícono */
+}
+
+.card{
+    display: flex;
+    max-width: 100vh;
+}

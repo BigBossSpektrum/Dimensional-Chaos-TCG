@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  padding-top: 30px;
+
+}
+
+.cardImageSection {
+/* estilos para la imagen */
+  flex-basis: 40%;
+  padding-left: 30px;
+  padding-right: 30px;
+  align-items: center;
+  min-width: 350px;
+  min-height: 350px;
+  max-width: 350px;
+  max-height: 350px;
+}
+
+.cardImageSection, .cardDescriptionsection {
+  flex-basis: 50%;
+  
+}
+
+.cardDescriptionSection {
+  /* estilos para la descripción */
+  text-align: start;
+  flex-direction: column;
+}
+
+.cardAtributes, .cardLimited {
+  flex-basis: 100%;
+}
+
+.card-name{
+  font-family: "Kanit", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.card-desc{
+  font-family: "Kanit", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  max-width: 600px;
+  text-align: justify;
+}
+
+.cardLimited{
+  padding-top: 100px;
+  padding-left: 30px;
+}
+
+.cardAtributes{
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
+  padding-top: 20px;
+}

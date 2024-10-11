@@ -1,0 +1,19 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/styles_base.css' %}">
+
+<div class="mainMenu">
+
+    <form class="mainMenu_search" method="GET" action="{% url 'search_cards' %}"> <!-- falta el action para buscar una carta -->
+        <input id="sendData" type="search" name="q" value="{{ query }}" placeholder="Search Yu-Gi-Oh! Cards">
+        <a href="{% url 'random_card' %}"><i class="fa-solid fa-shuffle" style="color: #ffffff;"></i></a>
+    </form>
+    
+    <div class="mainMenu_buttons">
+        <a href=""><i class="fa-solid fa-language"></i></a>
+        <a href=""><i class="fa-solid fa-moon"></i></a>
+        <a href=""><i class="fa-solid fa-dollar-sign"></i></a>
+        <a href="{% url 'login' %}" class="btn-login">Login In</a>
+        <a href="" class="btn-signup">Sing Up</a>
+    </div>
+</div>

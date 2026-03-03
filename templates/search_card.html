@@ -1,31 +1,81 @@
 {% extends "layouts/base.html" %}
 
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/random_card.css' %}" type="text/css">
+{% endblock %}
 
 {% block content %}
-    
+
 <div class="card-cardContainer">
     {% if cards %}
         {% for card in cards %}
-        <div class="cardContainer">
+        <div class="cardContainer" id="card-{{ card.card_id }}">
 
             <div class="leftSectionContainer">
         
                 <div class="cardImageSection">
         
-                    <img id="img_card_random" src="{{ card.card_images.0.image_url }}" alt="{{ card.name }}">
+                    {% if card.card_images.first %}
+                    <img class="img-card-main" src="{{ card.card_images.first.image_url }}" alt="{{ card.name }}">
+                    {% endif %}
+
+                    {% if card.card_images.count > 1 %}
+                    <div class="cardGallery">
+                        <p class="galleryTitle">Artworks</p>
+                        <div class="galleryThumbnails">
+                            {% for img in card.card_images.all %}
+                            <img class="galleryThumb {% if forloop.first %}galleryThumb--active{% endif %}"
+                                 src="{{ img.image_url_small }}" 
+                                 alt="{{ card.name }} art {{ forloop.counter }}"
+                                 data-full-image="{{ img.image_url }}"
+                                 onclick="switchArtwork(this)">
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if card.card_sets.exists %}
+                    <div class="cardGallery">
+                        <p class="galleryTitle">Sets / Rarities</p>
+                        <div class="setThumbnails">
+                            {% for set in card.card_sets.all %}
+                            <div class="setThumb {% if forloop.first %}setThumb--active{% endif %}"
+                                 data-set-name="{{ set.set_name }}"
+                                 data-set-code="{{ set.set_code }}"
+                                 data-set-rarity="{{ set.set_rarity }}"
+                                 data-set-price="{{ set.set_price }}"
+                                 data-card-id="{{ card.card_id }}"
+                                 onclick="switchSet(this)">
+                                <span class="setThumb-code">{{ set.set_code }}</span>
+                                <span class="setThumb-rarity">{{ set.set_rarity }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
                     
                 </div>
         
+                {% if card.banlist_info %}
                 <div class="cardLimited">
-                    <div>cartas limitadas</div>
+                    <div>
+                        {% if card.banlist_info.ban_tcg %}
+                            TCG: {{ card.banlist_info.ban_tcg }}
+                        {% endif %}
+                        {% if card.banlist_info.ban_ocg %}
+                            OCG: {{ card.banlist_info.ban_ocg }}
+                        {% endif %}
+                    </div>
                 </div>
+                {% endif %}
         
             </div>
         
             <div class="rightSectionContainer">
         
-                <div class="cardDescriptionsection" >
-                    <div>
+                <div class="cardDescriptionsection">
+                    <div class="cardDescriptionContainer">
                         <div class="card-name">
                             <h3>{{ card.name }}</h3>
                         </div>
@@ -36,7 +86,7 @@
                     </div>
                 </div>
             
-                {% if card.attribute or card.race or card.archetype or card.level or card.atk or card.def or card.card_prices %}
+                {% if card.attribute or card.race or card.archetype or card.level or card.atk or card.defense or card.card_prices.first %}
                 <div class="cardAtributes">
 
                         {% if card.attribute %}
@@ -63,37 +113,84 @@
                         </div>
                         {% endif %}
 
-                        {% if card.atk %}
+                        {% if card.atk is not None %}
                         <div>
                             <strong>ATK:</strong> {{ card.atk }}
                         </div>
                         {% endif %}
 
-                        {% if card.def %}
+                        {% if card.defense is not None %}
                         <div>
-                            <strong>DEF:</strong> {{ card.def }}
+                            <strong>DEF:</strong> {{ card.defense }}
                         </div>
                         {% endif %}
 
-                        {% if card.card_prices %}
+                        {% if card.linkval %}
                         <div>
-                            <strong>TCG Precio:</strong> {{ card.card_prices.0.tcgplayer_price }}$
+                            <strong>LINK:</strong> {{ card.linkval }}
                         </div>
                         {% endif %}
 
-                        {% if card.set_code %}
+                        {% if card.scale is not None %}
                         <div>
-                            <strong>SET CODE:</strong> {{ card.card_sets.0.set_code }}
+                            <strong>SCALE:</strong> {{ card.scale }}
                         </div>
+                        {% endif %}
+
+                        {% if card.card_prices.first %}
+                        <div>
+                            <strong>TCG Precio:</strong> {{ card.card_prices.first.tcgplayer_price }}$
+                        </div>
+                        {% endif %}
+
+                        {% if card.card_sets.first %}
+                        <div class="info-set-name"><strong>SET:</strong> {{ card.card_sets.first.set_name }}</div>
+                        <div class="info-set-code"><strong>SET CODE:</strong> {{ card.card_sets.first.set_code }}</div>
+                        <div class="info-set-rarity"><strong>RARITY:</strong> {{ card.card_sets.first.set_rarity }}</div>
+                        <div class="info-set-price"><strong>SET PRICE:</strong> {{ card.card_sets.first.set_price }}$</div>
                         {% endif %}
                 </div>
                 {% endif %}
         
             </div>
+        </div>
         {% endfor %}
     {% else %}
-        <p>No se encontraron cartas.</p>
+        {% if query %}
+            <p>No se encontraron cartas para "{{ query }}".</p>
+        {% else %}
+            <p>Ingresa un término de búsqueda para encontrar cartas.</p>
+        {% endif %}
     {% endif %}
 </div>
+
+<script>
+function switchArtwork(thumb) {
+    var container = thumb.closest('.cardContainer');
+    var mainImg = container.querySelector('.img-card-main');
+    mainImg.src = thumb.dataset.fullImage;
+    
+    var allThumbs = thumb.parentElement.querySelectorAll('.galleryThumb');
+    allThumbs.forEach(function(t) { t.classList.remove('galleryThumb--active'); });
+    thumb.classList.add('galleryThumb--active');
+}
+
+function switchSet(setThumb) {
+    var container = setThumb.closest('.cardContainer');
+    var setName = container.querySelector('.info-set-name');
+    var setCode = container.querySelector('.info-set-code');
+    var setRarity = container.querySelector('.info-set-rarity');
+    var setPrice = container.querySelector('.info-set-price');
+    
+    if (setName) setName.innerHTML = '<strong>SET:</strong> ' + setThumb.dataset.setName;
+    if (setCode) setCode.innerHTML = '<strong>SET CODE:</strong> ' + setThumb.dataset.setCode;
+    if (setRarity) setRarity.innerHTML = '<strong>RARITY:</strong> ' + setThumb.dataset.setRarity;
+    if (setPrice) setPrice.innerHTML = '<strong>SET PRICE:</strong> ' + setThumb.dataset.setPrice + '$';
+    
+    var allSets = setThumb.parentElement.querySelectorAll('.setThumb');
+    allSets.forEach(function(s) { s.classList.remove('setThumb--active'); });
+    setThumb.classList.add('setThumb--active');
+}
+</script>
 
 {% endblock %}

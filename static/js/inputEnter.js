@@ -1,6 +1,11 @@
-function sendData() {
-    var input = document.getElementById("miInput");
-    var valor = input.value;
-    // Aquí puedes hacer algo con el valor del input
-    console.log(valor);
+document.addEventListener('DOMContentLoaded', function () {
+  var input = document.getElementById("sendData");
+  if (input) {
+    input.addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        input.closest("form").submit();
+      }
+    });
   }
+});

@@ -85,3 +85,96 @@
   border-radius: 4px;
   max-height: 60px;
 }
+
+/* ─── Gallery: Artworks & Sets ─── */
+
+.cardGallery {
+  margin-top: 16px;
+  padding: 0 30px;
+}
+
+.galleryTitle {
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #555;
+}
+
+.galleryThumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.galleryThumb {
+  width: 60px;
+  height: 88px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.galleryThumb:hover {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.galleryThumb--active {
+  opacity: 1;
+  border-color: #ffcc00;
+  box-shadow: 0 0 6px rgba(255, 204, 0, 0.5);
+}
+
+/* ─── Set / Rarity thumbnails ─── */
+
+.setThumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.setThumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 10px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #fafafa;
+  min-width: 80px;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.setThumb:hover {
+  background: #f0f0f0;
+  transform: scale(1.04);
+}
+
+.setThumb--active {
+  border-color: #ffcc00;
+  background: #fff8dc;
+  box-shadow: 0 0 6px rgba(255, 204, 0, 0.3);
+}
+
+.setThumb-code {
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #333;
+}
+
+.setThumb-rarity {
+  font-family: "Kanit", sans-serif;
+  font-weight: 400;
+  font-size: 0.65rem;
+  color: #777;
+  margin-top: 2px;
+}

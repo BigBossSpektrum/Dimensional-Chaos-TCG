@@ -12,7 +12,41 @@
 
         <div class="cardImageSection">
 
-            <img id="img_card_random" src="{{ card.card_images.0.image_url }}" alt="{{ card.name }}">
+            <img id="img_card_main" src="{{ card.card_images.0.image_url }}" alt="{{ card.name }}">
+
+            {% if card.card_images|length > 1 %}
+            <div class="cardGallery">
+                <p class="galleryTitle">Artworks</p>
+                <div class="galleryThumbnails">
+                    {% for img in card.card_images %}
+                    <img class="galleryThumb {% if forloop.first %}galleryThumb--active{% endif %}"
+                         src="{{ img.image_url_small }}" 
+                         alt="{{ card.name }} art {{ forloop.counter }}"
+                         data-full-image="{{ img.image_url }}"
+                         onclick="switchArtwork(this)">
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if card.card_sets %}
+            <div class="cardGallery">
+                <p class="galleryTitle">Sets / Rarities</p>
+                <div class="setThumbnails">
+                    {% for set in card.card_sets %}
+                    <div class="setThumb {% if forloop.first %}setThumb--active{% endif %}"
+                         data-set-name="{{ set.set_name }}"
+                         data-set-code="{{ set.set_code }}"
+                         data-set-rarity="{{ set.set_rarity }}"
+                         data-set-price="{{ set.set_price }}"
+                         onclick="switchSet(this)">
+                        <span class="setThumb-code">{{ set.set_code }}</span>
+                        <span class="setThumb-rarity">{{ set.set_rarity }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
 
             <div class="cardLimited">
                 <div>cartas limitadas</div>
@@ -67,9 +101,47 @@
                 <div><strong>TCG Precio:</strong> {{ card.card_prices.0.tcgplayer_price }}$</div>
                 {% endif %}
 
+                {% if card.card_sets.0.set_code %}
+                <div id="info-set-name"><strong>SET:</strong> {{ card.card_sets.0.set_name }}</div>
+                <div id="info-set-code"><strong>SET CODE:</strong> {{ card.card_sets.0.set_code }}</div>
+                <div id="info-set-rarity"><strong>RARITY:</strong> {{ card.card_sets.0.set_rarity }}</div>
+                <div id="info-set-price"><strong>SET PRICE:</strong> {{ card.card_sets.0.set_price }}$</div>
+                {% endif %}
+
         </div>
         {% endif %}
 
     </div>
 </div>
+
+<script>
+function switchArtwork(thumb) {
+    // Update main image
+    var mainImg = document.getElementById('img_card_main');
+    mainImg.src = thumb.dataset.fullImage;
+    
+    // Update active state
+    var allThumbs = thumb.parentElement.querySelectorAll('.galleryThumb');
+    allThumbs.forEach(function(t) { t.classList.remove('galleryThumb--active'); });
+    thumb.classList.add('galleryThumb--active');
+}
+
+function switchSet(setThumb) {
+    // Update set info in attributes
+    var setName = document.getElementById('info-set-name');
+    var setCode = document.getElementById('info-set-code');
+    var setRarity = document.getElementById('info-set-rarity');
+    var setPrice = document.getElementById('info-set-price');
+    
+    if (setName) setName.innerHTML = '<strong>SET:</strong> ' + setThumb.dataset.setName;
+    if (setCode) setCode.innerHTML = '<strong>SET CODE:</strong> ' + setThumb.dataset.setCode;
+    if (setRarity) setRarity.innerHTML = '<strong>RARITY:</strong> ' + setThumb.dataset.setRarity;
+    if (setPrice) setPrice.innerHTML = '<strong>SET PRICE:</strong> ' + setThumb.dataset.setPrice + '$';
+    
+    // Update active state
+    var allSets = setThumb.parentElement.querySelectorAll('.setThumb');
+    allSets.forEach(function(s) { s.classList.remove('setThumb--active'); });
+    setThumb.classList.add('setThumb--active');
+}
+</script>
 {% endblock %}

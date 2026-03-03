@@ -2,7 +2,9 @@ import requests
 import random
 from urllib.parse import quote
 from django.shortcuts import render
+from django.db.models import Q
 from requests.exceptions import RequestException
+from .models import Card
 
 api_url = 'https://db.ygoprodeck.com/api/v7/cardinfo.php'
 api_random_url = 'https://db.ygoprodeck.com/api/v7/randomcard.php'
@@ -51,16 +53,21 @@ def card_info(request, card_name):
 
 def search_cards(request):
     query = request.GET.get('q')
-    cards = []
+    cards = Card.objects.none()
     
     if query:
         query = query.strip()
         
         if query:
-            # Usar fname (fuzzy name) para búsquedas parciales y encode del parámetro
-            encoded_query = quote(query)
-            api_query_url = f'{api_url}?fname={encoded_query}'
-            cards = get_cards_from_api(api_query_url)
+            # Buscar en la base de datos local por nombre, arquetipo, tipo o descripción
+            cards = Card.objects.filter(
+                Q(name__icontains=query) |
+                Q(archetype__icontains=query) |
+                Q(type__icontains=query) |
+                Q(desc__icontains=query)
+            ).prefetch_related(
+                'card_images', 'card_prices', 'card_sets'
+            ).select_related('banlist_info')[:40]
 
     context = {'cards': cards, 'query': query}
     return render(request, 'search_card.html', context)

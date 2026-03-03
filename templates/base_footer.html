@@ -1,11 +1,62 @@
-<div class="card">
-  <div class="card-header">
-    Quote
+{% load static %}
+
+<footer class="site-footer">
+  <div class="footer-content">
+
+    <!-- Brand -->
+    <div class="footer-section footer-brand">
+      <div class="footer-logo">
+        <img src="{% static 'img/dimensionalPrison.jpg' %}" alt="Dimensional Chaos Logo">
+        <span>Dimensional Chaos</span>
+      </div>
+      <p class="footer-description">
+        Your ultimate Yu-Gi-Oh! TCG companion. Build decks, search cards, and stay ahead of the meta.
+      </p>
+      <div class="footer-socials">
+        <a href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+        <a href="#" aria-label="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- Browse -->
+    <div class="footer-section">
+      <h4 class="footer-heading">Browse</h4>
+      <ul class="footer-links">
+        <li><a href="{% url 'search_cards' %}">Card Search</a></li>
+        <li><a href="{% url 'random_card' %}">Random Card</a></li>
+        <li><a href="#">Top Decks</a></li>
+        <li><a href="#">Sets</a></li>
+        <li><a href="#">Themes</a></li>
+      </ul>
+    </div>
+
+    <!-- Tools -->
+    <div class="footer-section">
+      <h4 class="footer-heading">Tools</h4>
+      <ul class="footer-links">
+        <li><a href="#">Collection Manager</a></li>
+        <li><a href="#">Deck Builder</a></li>
+        <li><a href="#">Tournaments</a></li>
+        <li><a href="#">Community</a></li>
+      </ul>
+    </div>
+
+    <!-- Database -->
+    <div class="footer-section">
+      <h4 class="footer-heading">Database</h4>
+      <ul class="footer-links">
+        <li><a href="#">Spoilers</a></li>
+        <li><a href="#">Forbidden Cards</a></li>
+        <li><a href="#">Alternative Artworks</a></li>
+        <li><a href="#">OCG-Only Cards</a></li>
+      </ul>
+    </div>
+
   </div>
-  <div class="card-body">
-    <blockquote class="blockquote mb-0">
-      <p>A well-known quote, contained in a blockquote element.</p>
-      <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-    </blockquote>
+
+  <div class="footer-bottom">
+    <p>&copy; 2026 Dimensional Chaos TCG. All rights reserved. Not affiliated with Konami.</p>
   </div>
-</div>
+</footer>

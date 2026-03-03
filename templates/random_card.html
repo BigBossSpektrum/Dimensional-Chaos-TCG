@@ -1,6 +1,9 @@
 {% extends "layouts/base.html" %}
 
 {% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/random_card.css' %}" type="text/css">
+{% endblock %}
 {% block content %}
 
 <div class="cardContainer">
@@ -10,11 +13,11 @@
         <div class="cardImageSection">
 
             <img id="img_card_random" src="{{ card.card_images.0.image_url }}" alt="{{ card.name }}">
-            
-        </div>
 
-        <div class="cardLimited">
-            <div>cartas limitadas</div>
+            <div class="cardLimited">
+                <div>cartas limitadas</div>
+            </div>
+            
         </div>
 
     </div>
@@ -35,53 +38,36 @@
     
         <div class="cardAtributes">
 
-                <div>
-                    {% if card.attribute %}
-                    <strong>ATRIBUTE:</strong> {{ card.attribute }}
-                    {% endif %}
-                </div>
+                {% if card.attribute %}
+                <div><strong>ATRIBUTE:</strong> {{ card.attribute }}</div>
+                {% endif %}
 
-                <div>
-                    {% if card.race %}
-                        <strong>TYPE:</strong> {{ card.race }}
-                    {% endif %}
-                </div>
+                {% if card.race %}
+                <div><strong>TYPE:</strong> {{ card.race }}</div>
+                {% endif %}
 
-                <div>
-                    {% if card.archetype %}
-                        <strong>ARQUETYPE:</strong> {{ card.archetype }}
-                    {% endif %}
-                </div>
-       
-                <div>
-                    {% if card.level %}
-                        <strong>LEVEL:</strong> {{ card.level }}
-                    {% endif %}
-                </div>
-                                   
-                <div>
-                    {% if card.atk %}
-                        <strong>ATK:</strong> {{ card.atk }}
-                    {% endif %}
-                </div>
+                {% if card.archetype %}
+                <div><strong>ARQUETYPE:</strong> {{ card.archetype }}</div>
+                {% endif %}
 
-                <div>
-                    {% if card.def %}
-                        <strong>DEF:</strong> {{ card.def }}
-                    {% endif %}
-                </div>
+                {% if card.level %}
+                <div><strong>LEVEL:</strong> {{ card.level }}</div>
+                {% endif %}
 
-                {% comment %} Filtrado de rareza de carta {% endcomment %}
-                {% comment %} <div>
-                    {% filtrar_valor card.card_sets 'valor_deseado' %}
-                </div> {% endcomment %}
-                
-                
+                {% if card.atk %}
+                <div><strong>ATK:</strong> {{ card.atk }}</div>
+                {% endif %}
 
-                <div>
-                    <strong>TCG Precio:</strong> {{ card.card_prices.0.tcgplayer_price }}$
-                </div>
+                {% if card.def %}
+                <div><strong>DEF:</strong> {{ card.def }}</div>
+                {% endif %}
+
+                {% if card.card_prices.0.tcgplayer_price %}
+                <div><strong>TCG Precio:</strong> {{ card.card_prices.0.tcgplayer_price }}$</div>
+                {% endif %}
+
         </div>
 
     </div>
+</div>
 {% endblock %}

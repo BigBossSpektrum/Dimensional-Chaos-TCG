@@ -80,6 +80,12 @@
                             <strong>TCG Precio:</strong> {{ card.card_prices.0.tcgplayer_price }}$
                         </div>
                         {% endif %}
+
+                        {% if card.set_code %}
+                        <div>
+                            <strong>SET CODE:</strong> {{ card.card_sets.0.set_code }}
+                        </div>
+                        {% endif %}
                 </div>
                 {% endif %}
         

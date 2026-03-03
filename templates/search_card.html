@@ -92,64 +92,45 @@
                 <div class="cardAtributes">
 
                         {% if card.attribute %}
-                        <div>
-                            <strong>ATRIBUTE:</strong> {{ card.attribute }}
-                        </div>
+                        <div class="attr-item"><span class="attr-label">Attribute</span><span class="attr-value"><img src="{% static 'img/attributes/' %}{{ card.attribute }}.png" alt="{{ card.attribute }}" class="attr-icon"> {{ card.attribute }}</span></div>
                         {% endif %}
 
                         {% if card.race %}
-                        <div>
-                            <strong>TYPE:</strong> {{ card.race }}
-                        </div>
+                        <div class="attr-item"><span class="attr-label">Type</span><span class="attr-value"><img src="{% static 'img/races/' %}{{ card.race }}.png" alt="{{ card.race }}" class="attr-icon"> {{ card.race }}</span></div>
                         {% endif %}
 
                         {% if card.archetype %}
-                        <div>
-                            <strong>ARQUETYPE:</strong> {{ card.archetype }}
-                        </div>
+                        <div class="attr-item"><span class="attr-label">Archetype</span><span class="attr-value">{{ card.archetype }}</span></div>
                         {% endif %}
 
                         {% if card.level %}
-                        <div>
-                            <strong>LEVEL:</strong> {{ card.level }}
-                        </div>
+                        <div class="attr-item"><span class="attr-label">Level</span><span class="attr-value">{{ card.level }}</span></div>
                         {% endif %}
 
                         {% if card.atk is not None %}
-                        <div>
-                            <strong>ATK:</strong> {{ card.atk }}
-                        </div>
+                        <div class="attr-item"><span class="attr-label">ATK</span><span class="attr-value">{{ card.atk }}</span></div>
                         {% endif %}
 
                         {% if card.defense is not None %}
-                        <div>
-                            <strong>DEF:</strong> {{ card.defense }}
-                        </div>
+                        <div class="attr-item"><span class="attr-label">DEF</span><span class="attr-value">{{ card.defense }}</span></div>
                         {% endif %}
 
                         {% if card.linkval %}
-                        <div>
-                            <strong>LINK:</strong> {{ card.linkval }}
-                        </div>
+                        <div class="attr-item"><span class="attr-label">Link</span><span class="attr-value">{{ card.linkval }}</span></div>
                         {% endif %}
 
                         {% if card.scale is not None %}
-                        <div>
-                            <strong>SCALE:</strong> {{ card.scale }}
-                        </div>
+                        <div class="attr-item"><span class="attr-label">Scale</span><span class="attr-value">{{ card.scale }}</span></div>
                         {% endif %}
 
                         {% if card.card_prices.first %}
-                        <div>
-                            <strong>TCG Precio:</strong> {{ card.card_prices.first.tcgplayer_price }}$
-                        </div>
+                        <div class="attr-item"><span class="attr-label">TCG Price</span><span class="attr-value">{{ card.card_prices.first.tcgplayer_price }}$</span></div>
                         {% endif %}
 
                         {% if card.card_sets.first %}
-                        <div class="info-set-name"><strong>SET:</strong> {{ card.card_sets.first.set_name }}</div>
-                        <div class="info-set-code"><strong>SET CODE:</strong> {{ card.card_sets.first.set_code }}</div>
-                        <div class="info-set-rarity"><strong>RARITY:</strong> {{ card.card_sets.first.set_rarity }}</div>
-                        <div class="info-set-price"><strong>SET PRICE:</strong> {{ card.card_sets.first.set_price }}$</div>
+                        <div class="attr-item attr-full info-set-name"><span class="attr-label">Set</span><span class="attr-value">{{ card.card_sets.first.set_name }}</span></div>
+                        <div class="attr-item info-set-code"><span class="attr-label">Set Code</span><span class="attr-value">{{ card.card_sets.first.set_code }}</span></div>
+                        <div class="attr-item info-set-rarity"><span class="attr-label">Rarity</span><span class="attr-value">{{ card.card_sets.first.set_rarity }}</span></div>
                         {% endif %}
                 </div>
                 {% endif %}
@@ -184,10 +165,10 @@ function switchSet(setThumb) {
     var setRarity = container.querySelector('.info-set-rarity');
     var setPrice = container.querySelector('.info-set-price');
     
-    if (setName) setName.innerHTML = '<strong>SET:</strong> ' + setThumb.dataset.setName;
-    if (setCode) setCode.innerHTML = '<strong>SET CODE:</strong> ' + setThumb.dataset.setCode;
-    if (setRarity) setRarity.innerHTML = '<strong>RARITY:</strong> ' + setThumb.dataset.setRarity;
-    if (setPrice) setPrice.innerHTML = '<strong>SET PRICE:</strong> ' + setThumb.dataset.setPrice + '$';
+    if (setName) setName.querySelector('.attr-value').textContent = setThumb.dataset.setName;
+    if (setCode) setCode.querySelector('.attr-value').textContent = setThumb.dataset.setCode;
+    if (setRarity) setRarity.querySelector('.attr-value').textContent = setThumb.dataset.setRarity;
+    if (setPrice) setPrice.querySelector('.attr-value').textContent = setThumb.dataset.setPrice + '$';
     
     var allSets = setThumb.parentElement.querySelectorAll('.setThumb');
     allSets.forEach(function(s) { s.classList.remove('setThumb--active'); });

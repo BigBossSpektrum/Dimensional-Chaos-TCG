@@ -36,55 +36,52 @@
                     </div>
                 </div>
             
+                {% if card.attribute or card.race or card.archetype or card.level or card.atk or card.def or card.card_prices %}
                 <div class="cardAtributes">
 
+                        {% if card.attribute %}
                         <div>
-                            {% if card.attribute %}
                             <strong>ATRIBUTE:</strong> {{ card.attribute }}
-                            {% endif %}
                         </div>
+                        {% endif %}
 
+                        {% if card.race %}
                         <div>
-                            {% if card.race %}
-                                <strong>TYPE:</strong> {{ card.race }}
-                            {% endif %}
+                            <strong>TYPE:</strong> {{ card.race }}
                         </div>
+                        {% endif %}
 
+                        {% if card.archetype %}
                         <div>
-                            {% if card.archetype %}
-                                <strong>ARQUETYPE:</strong> {{ card.archetype }}
-                            {% endif %}
+                            <strong>ARQUETYPE:</strong> {{ card.archetype }}
                         </div>
-               
-                        <div>
-                            {% if card.level %}
-                                <strong>LEVEL:</strong> {{ card.level }}
-                            {% endif %}
-                        </div>
-                                           
-                        <div>
-                            {% if card.atk %}
-                                <strong>ATK:</strong> {{ card.atk }}
-                            {% endif %}
-                        </div>
+                        {% endif %}
 
+                        {% if card.level %}
                         <div>
-                            {% if card.def %}
-                                <strong>DEF:</strong> {{ card.def }}
-                            {% endif %}
+                            <strong>LEVEL:</strong> {{ card.level }}
                         </div>
+                        {% endif %}
 
-                        {% comment %} Filtrado de rareza de carta {% endcomment %}
-                        {% comment %} <div>
-                            {% filtrar_valor card.card_sets 'valor_deseado' %}
-                        </div> {% endcomment %}
-                        
-                        
+                        {% if card.atk %}
+                        <div>
+                            <strong>ATK:</strong> {{ card.atk }}
+                        </div>
+                        {% endif %}
 
+                        {% if card.def %}
+                        <div>
+                            <strong>DEF:</strong> {{ card.def }}
+                        </div>
+                        {% endif %}
+
+                        {% if card.card_prices %}
                         <div>
                             <strong>TCG Precio:</strong> {{ card.card_prices.0.tcgplayer_price }}$
                         </div>
+                        {% endif %}
                 </div>
+                {% endif %}
         
             </div>
         {% endfor %}

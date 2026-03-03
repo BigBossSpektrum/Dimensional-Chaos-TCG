@@ -25,7 +25,7 @@
     <div class="rightSectionContainer">
 
         <div class="cardDescriptionsection" >
-            <div>
+            <div class="cardDescriptionContainer">
                 <div class="card-name">
                     <h3>{{ card.name }}</h3>
                 </div>
@@ -36,6 +36,7 @@
             </div>
         </div>
     
+        {% if card.attribute or card.race or card.archetype or card.level or card.atk or card.def or card.card_prices.0.tcgplayer_price %}
         <div class="cardAtributes">
 
                 {% if card.attribute %}
@@ -67,6 +68,7 @@
                 {% endif %}
 
         </div>
+        {% endif %}
 
     </div>
 </div>

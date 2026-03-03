@@ -13,7 +13,7 @@
         <div class="cardImageSection">
 
             {% if card.card_images.first %}
-            <img id="img_card_main" src="{{ card.card_images.first.image_url }}" alt="{{ card.name }}">
+            <img id="img_card_main" src="{{ card.card_images.first.image_url }}" alt="{{ card.name }}" onclick="openLightbox(this.src)" style="cursor: zoom-in;">
             {% endif %}
 
             {% if card.card_images.count > 1 %}
@@ -155,7 +155,79 @@
     </div>
 </div>
 
+<!-- Lightbox modal -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-img" class="lightbox-img" src="" alt="Card image">
+</div>
+
+<style>
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+.lightbox-img {
+    width: 70%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+    animation: lightbox-fade-in 0.25s ease;
+}
+
+@keyframes lightbox-fade-in {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.lightbox-close:hover {
+    color: #ffcc00;
+}
+</style>
+
 <script>
+function openLightbox(src) {
+    var lightbox = document.getElementById('lightbox');
+    var img = document.getElementById('lightbox-img');
+    img.src = src;
+    lightbox.classList.add('active');
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+}
+
+// Close with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+});
+
 function switchArtwork(thumb) {
     var mainImg = document.getElementById('img_card_main');
     mainImg.src = thumb.dataset.fullImage;

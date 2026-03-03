@@ -1,0 +1,184 @@
+{% extends "layouts/base.html" %}
+
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/random_card.css' %}" type="text/css">
+{% endblock %}
+{% block content %}
+
+<div class="cardContainer">
+
+    <div class="leftSectionContainer">
+
+        <div class="cardImageSection">
+
+            {% if card.card_images.first %}
+            <img id="img_card_main" src="{{ card.card_images.first.image_url }}" alt="{{ card.name }}">
+            {% endif %}
+
+            {% if card.card_images.count > 1 %}
+            <div class="cardGallery">
+                <p class="galleryTitle">Artworks</p>
+                <div class="galleryThumbnails">
+                    {% for img in card.card_images.all %}
+                    <img class="galleryThumb {% if forloop.first %}galleryThumb--active{% endif %}"
+                         src="{{ img.image_url_small }}" 
+                         alt="{{ card.name }} art {{ forloop.counter }}"
+                         data-full-image="{{ img.image_url }}"
+                         onclick="switchArtwork(this)">
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if card.card_sets.exists %}
+            <div class="cardGallery">
+                <p class="galleryTitle">Sets / Rarities</p>
+                <div class="setThumbnails">
+                    {% for set in card.card_sets.all %}
+                    <div class="setThumb {% if forloop.first %}setThumb--active{% endif %}"
+                         data-set-name="{{ set.set_name }}"
+                         data-set-code="{{ set.set_code }}"
+                         data-set-rarity="{{ set.set_rarity }}"
+                         data-set-price="{{ set.set_price }}"
+                         onclick="switchSet(this)">
+                        <span class="setThumb-code">{{ set.set_code }}</span>
+                        <span class="setThumb-rarity">{{ set.set_rarity }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if card.banlist_info %}
+            <div class="cardLimited">
+                <div>
+                    {% if card.banlist_info.ban_tcg %}
+                        TCG: {{ card.banlist_info.ban_tcg }}
+                    {% endif %}
+                    {% if card.banlist_info.ban_ocg %}
+                        OCG: {{ card.banlist_info.ban_ocg }}
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+        </div>
+
+    </div>
+
+    <div class="rightSectionContainer">
+
+        <div class="cardDescriptionsection">
+            <div class="cardDescriptionContainer">
+                <div class="card-name">
+                    <h3>{{ card.name }}</h3>
+                </div>
+
+                {% if card.human_readable_card_type %}
+                <div class="card-type-badge">{{ card.human_readable_card_type }}</div>
+                {% endif %}
+        
+                <div class="card-desc">
+                    {{ card.desc }}
+                </div>
+
+                {% if card.pend_desc %}
+                <div class="card-desc" style="margin-top: 10px;">
+                    <strong>Pendulum Effect:</strong><br>
+                    {{ card.pend_desc }}
+                </div>
+                {% endif %}
+
+                {% if card.monster_desc %}
+                <div class="card-desc" style="margin-top: 10px;">
+                    <strong>Monster Effect:</strong><br>
+                    {{ card.monster_desc }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    
+        {% if card.attribute or card.race or card.archetype or card.level or card.atk or card.defense or card.card_prices.first %}
+        <div class="cardAtributes">
+
+                {% if card.attribute %}
+                <div><strong>ATRIBUTE:</strong> {{ card.attribute }}</div>
+                {% endif %}
+
+                {% if card.race %}
+                <div><strong>TYPE:</strong> {{ card.race }}</div>
+                {% endif %}
+
+                {% if card.frame_type %}
+                <div><strong>FRAME:</strong> {{ card.frame_type }}</div>
+                {% endif %}
+
+                {% if card.archetype %}
+                <div><strong>ARQUETYPE:</strong> {{ card.archetype }}</div>
+                {% endif %}
+
+                {% if card.level %}
+                <div><strong>LEVEL:</strong> {{ card.level }}</div>
+                {% endif %}
+
+                {% if card.atk is not None %}
+                <div><strong>ATK:</strong> {{ card.atk }}</div>
+                {% endif %}
+
+                {% if card.defense is not None %}
+                <div><strong>DEF:</strong> {{ card.defense }}</div>
+                {% endif %}
+
+                {% if card.linkval %}
+                <div><strong>LINK:</strong> {{ card.linkval }}</div>
+                {% endif %}
+
+                {% if card.scale is not None %}
+                <div><strong>SCALE:</strong> {{ card.scale }}</div>
+                {% endif %}
+
+                {% if card.card_prices.first %}
+                <div><strong>TCG Precio:</strong> {{ card.card_prices.first.tcgplayer_price }}$</div>
+                {% endif %}
+
+                {% if card.card_sets.first %}
+                <div id="info-set-name"><strong>SET:</strong> {{ card.card_sets.first.set_name }}</div>
+                <div id="info-set-code"><strong>SET CODE:</strong> {{ card.card_sets.first.set_code }}</div>
+                <div id="info-set-rarity"><strong>RARITY:</strong> {{ card.card_sets.first.set_rarity }}</div>
+                <div id="info-set-price"><strong>SET PRICE:</strong> {{ card.card_sets.first.set_price }}$</div>
+                {% endif %}
+
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+function switchArtwork(thumb) {
+    var mainImg = document.getElementById('img_card_main');
+    mainImg.src = thumb.dataset.fullImage;
+    
+    var allThumbs = thumb.parentElement.querySelectorAll('.galleryThumb');
+    allThumbs.forEach(function(t) { t.classList.remove('galleryThumb--active'); });
+    thumb.classList.add('galleryThumb--active');
+}
+
+function switchSet(setThumb) {
+    var setName = document.getElementById('info-set-name');
+    var setCode = document.getElementById('info-set-code');
+    var setRarity = document.getElementById('info-set-rarity');
+    var setPrice = document.getElementById('info-set-price');
+    
+    if (setName) setName.innerHTML = '<strong>SET:</strong> ' + setThumb.dataset.setName;
+    if (setCode) setCode.innerHTML = '<strong>SET CODE:</strong> ' + setThumb.dataset.setCode;
+    if (setRarity) setRarity.innerHTML = '<strong>RARITY:</strong> ' + setThumb.dataset.setRarity;
+    if (setPrice) setPrice.innerHTML = '<strong>SET PRICE:</strong> ' + setThumb.dataset.setPrice + '$';
+    
+    var allSets = setThumb.parentElement.querySelectorAll('.setThumb');
+    allSets.forEach(function(s) { s.classList.remove('setThumb--active'); });
+    setThumb.classList.add('setThumb--active');
+}
+</script>
+{% endblock %}

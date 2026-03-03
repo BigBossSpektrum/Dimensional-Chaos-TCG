@@ -1,7 +1,7 @@
 import requests
 import random
 from urllib.parse import quote
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from requests.exceptions import RequestException
 from .models import Card
@@ -71,6 +71,16 @@ def search_cards(request):
 
     context = {'cards': cards, 'query': query}
     return render(request, 'search_card.html', context)
+
+def card_detail(request, card_id):
+    """Vista de detalle de una carta desde la base de datos local."""
+    card = get_object_or_404(
+        Card.objects.prefetch_related(
+            'card_images', 'card_prices', 'card_sets'
+        ).select_related('banlist_info'),
+        card_id=card_id
+    )
+    return render(request, 'card_detail.html', {'card': card})
 
 def random_card(request):
     # Usar el endpoint dedicado para carta aleatoria (1 sola carta, no todo el catálogo)

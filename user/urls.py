@@ -10,4 +10,6 @@ urlpatterns = [
     path('password-reset/', views.password_reset_request, name='password_reset_request'),
     path('password-reset/<uuid:token>/', views.password_reset_confirm, name='password_reset_confirm'),
     path('verify-email/<uuid:token>/', views.verify_email, name='verify_email'),
+    path('verification-sent/', views.verification_sent, name='verification_sent'),
+    path('resend-verification/', views.resend_verification, name='resend_verification'),
 ]

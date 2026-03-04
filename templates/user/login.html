@@ -36,6 +36,20 @@
                 </div>
                 <div>
                     <button type="submit">Acceder</button>
+                    {% if show_resend %}
+                    <div class="resend-verification">
+                        <p style="color: #e94560; font-size: 0.85rem; margin-top: 10px;">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Tu correo no está verificado.
+                        </p>
+                        <form action="{% url 'user:resend_verification' %}" method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="email" value="{{ unverified_email }}">
+                            <button type="submit" class="btn-resend">
+                                <i class="fa-solid fa-paper-plane"></i> Reenviar correo de verificación
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
                     <div class="register">
                         <p>No tengo cuenta <a href="{% url 'user:register' %}">Crear una cuenta</a></p>
                     </div>

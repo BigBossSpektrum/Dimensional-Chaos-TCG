@@ -135,3 +135,28 @@ button:hover{
 .register p a:hover{
     text-decoration: underline;
 }
+
+/* Resend verification button */
+.resend-verification {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.btn-resend {
+    background: transparent;
+    border: 1px solid #e94560;
+    color: #e94560;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: poppins, sans-serif;
+    margin-top: 8px;
+}
+
+.btn-resend:hover {
+    background: #e94560;
+    color: #fff;
+    transform: translateY(-1px);
+}

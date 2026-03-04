@@ -1,0 +1,36 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/verification_sent.css' %}" type="text/css">
+{% endblock %}
+
+{% block main_header %}{% endblock %}
+
+{% block content %}
+
+<section>
+    <div class="verification-container">
+        <div class="verification-card">
+            <div class="verification-icon">
+                <i class="fa-solid fa-envelope-circle-check"></i>
+            </div>
+            <h2>¡Revisa tu correo!</h2>
+            <p class="verification-message">
+                Hemos enviado un enlace de verificación a tu correo electrónico.
+                Por favor, revisa tu bandeja de entrada (y la carpeta de spam) para activar tu cuenta.
+            </p>
+            <div class="verification-info">
+                <i class="fa-solid fa-clock"></i>
+                <span>El enlace expirará en 48 horas</span>
+            </div>
+            <div class="verification-actions">
+                <a href="{% url 'user:login' %}" class="btn-back-login">
+                    <i class="fa-solid fa-arrow-left"></i> Ir a Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

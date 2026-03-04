@@ -17,7 +17,7 @@
         <a href=""><i class="fa-solid fa-moon"></i></a>
         <a href=""><i class="fa-solid fa-dollar-sign"></i></a>
         {% if user.is_authenticated %}
-            <span class="user-greeting">Hola, {{ user.username }}</span>
+            <span class="user-greeting" style="color: #ffffff; font-weight: bold;">Hola, {{ user.username }}</span>
             <a href="{% url 'user:logout' %}" class="btn-login">Logout</a>
         {% else %}
             <a href="{% url 'user:login' %}" class="btn-login">Log In</a>

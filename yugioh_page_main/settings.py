@@ -145,3 +145,18 @@ AUTH_USER_MODEL = 'user.CustomUser'
 LOGIN_URL = '/user/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# Email Configuration
+# Para desarrollo, usa la consola (imprime emails en terminal)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Para producción con Gmail, descomentar y configurar:
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+DEFAULT_FROM_EMAIL = 'Dimensional Chaos TCG <noreply@dimensionalchaos.com>'
+SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')

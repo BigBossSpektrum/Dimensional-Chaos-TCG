@@ -38,10 +38,11 @@
                          data-set-name="{{ set.set_name }}"
                          data-set-code="{{ set.set_code }}"
                          data-set-rarity="{{ set.set_rarity }}"
+                         data-set-rarity-code="{{ set.set_rarity_code }}"
                          data-set-price="{{ set.set_price }}"
                          onclick="switchSet(this)">
                         <span class="setThumb-code">{{ set.set_code }}</span>
-                        <span class="setThumb-rarity">{{ set.set_rarity }}</span>
+                        <span class="setThumb-rarity">{{ set.set_rarity_code }}</span>
                     </div>
                     {% endfor %}
                 </div>

@@ -19,14 +19,26 @@
             {% if card.card_images.count > 1 %}
             <div class="cardGallery">
                 <p class="galleryTitle">Artworks</p>
-                <div class="galleryThumbnails">
-                    {% for img in card.card_images.all %}
-                    <img class="galleryThumb {% if forloop.first %}galleryThumb--active{% endif %}"
-                         src="{{ img.image_url_small }}" 
-                         alt="{{ card.name }} art {{ forloop.counter }}"
-                         data-full-image="{{ img.image_url }}"
-                         onclick="switchArtwork(this)">
-                    {% endfor %}
+                <div class="carousel3d-wrapper">
+                    <button class="carousel3d-btn carousel3d-btn--prev" onclick="rotateCarousel(-1)">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <div class="carousel3d-viewport">
+                        <div class="carousel3d-scene" id="carousel3d-scene">
+                            {% for img in card.card_images.all %}
+                            <div class="carousel3d-card {% if forloop.first %}carousel3d-card--active{% endif %}"
+                                 data-index="{{ forloop.counter0 }}"
+                                 data-full-image="{{ img.image_url }}">
+                                <img src="{{ img.image_url_small }}" 
+                                     alt="{{ card.name }} art {{ forloop.counter }}"
+                                     onclick="switchArtworkCarousel(this.parentElement)">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button class="carousel3d-btn carousel3d-btn--next" onclick="rotateCarousel(1)">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
             {% endif %}
@@ -40,10 +52,11 @@
                          data-set-name="{{ set.set_name }}"
                          data-set-code="{{ set.set_code }}"
                          data-set-rarity="{{ set.set_rarity }}"
+                         data-set-rarity-code="{{ set.set_rarity_code }}"
                          data-set-price="{{ set.set_price }}"
                          onclick="switchSet(this)">
                         <span class="setThumb-code">{{ set.set_code }}</span>
-                        <span class="setThumb-rarity">{{ set.set_rarity }}</span>
+                        <span class="setThumb-rarity">{{ set.set_rarity_code }}</span>
                     </div>
                     {% endfor %}
                 </div>
@@ -231,14 +244,62 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLightbox();
 });
 
-function switchArtwork(thumb) {
+function switchArtworkCarousel(cardEl) {
     var mainImg = document.getElementById('img_card_main');
-    mainImg.src = thumb.dataset.fullImage;
+    mainImg.src = cardEl.dataset.fullImage;
     
-    var allThumbs = thumb.parentElement.querySelectorAll('.galleryThumb');
-    allThumbs.forEach(function(t) { t.classList.remove('galleryThumb--active'); });
-    thumb.classList.add('galleryThumb--active');
+    var allCards = document.querySelectorAll('.carousel3d-card');
+    allCards.forEach(function(c) { c.classList.remove('carousel3d-card--active'); });
+    cardEl.classList.add('carousel3d-card--active');
 }
+
+// ── 3D Carousel ──
+var carouselCurrentIndex = 0;
+var carouselTotal = 0;
+var carouselAngleStep = 0;
+var carouselRadius = 0;
+
+function initCarousel() {
+    var scene = document.getElementById('carousel3d-scene');
+    if (!scene) return;
+
+    var cards = scene.querySelectorAll('.carousel3d-card');
+    carouselTotal = cards.length;
+    if (carouselTotal === 0) return;
+
+    carouselAngleStep = 360 / carouselTotal;
+    // Compute radius so cards don't overlap
+    carouselRadius = Math.max(90, Math.round(80 / (2 * Math.tan(Math.PI / carouselTotal))));
+
+    cards.forEach(function(card, i) {
+        var angle = carouselAngleStep * i;
+        card.style.transform = 'rotateY(' + angle + 'deg) translateZ(' + carouselRadius + 'px)';
+    });
+
+    scene.style.transform = 'rotateY(0deg)';
+}
+
+function rotateCarousel(direction) {
+    carouselCurrentIndex += direction;
+    var scene = document.getElementById('carousel3d-scene');
+    if (!scene) return;
+
+    var angle = -carouselCurrentIndex * carouselAngleStep;
+    scene.style.transform = 'rotateY(' + angle + 'deg)';
+
+    // Update active state
+    var realIndex = ((carouselCurrentIndex % carouselTotal) + carouselTotal) % carouselTotal;
+    var cards = scene.querySelectorAll('.carousel3d-card');
+    cards.forEach(function(c) { c.classList.remove('carousel3d-card--active'); });
+    cards[realIndex].classList.add('carousel3d-card--active');
+
+    // Also update main image
+    var mainImg = document.getElementById('img_card_main');
+    mainImg.src = cards[realIndex].dataset.fullImage;
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', initCarousel);
 
 function switchSet(setThumb) {
     var setName = document.getElementById('info-set-name');
@@ -248,7 +309,11 @@ function switchSet(setThumb) {
     
     if (setName) setName.querySelector('.attr-value').textContent = setThumb.dataset.setName;
     if (setCode) setCode.querySelector('.attr-value').textContent = setThumb.dataset.setCode;
-    if (setRarity) setRarity.querySelector('.attr-value').textContent = setThumb.dataset.setRarity;
+    if (setRarity) {
+        var rarityIcon = setRarity.querySelector('.attr-value .attr-fa-icon');
+        setRarity.querySelector('.attr-value').textContent = setThumb.dataset.setRarity;
+        if (rarityIcon) setRarity.querySelector('.attr-value').prepend(rarityIcon);
+    }
     if (setPrice) setPrice.querySelector('.attr-value').textContent = setThumb.dataset.setPrice + '$';
     
     var allSets = setThumb.parentElement.querySelectorAll('.setThumb');

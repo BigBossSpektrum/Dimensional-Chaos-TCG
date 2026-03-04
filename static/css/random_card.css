@@ -177,26 +177,82 @@
   color: #555;
 }
 
-.galleryThumbnails {
+/* ─── 3D Rotating Carousel ─── */
+
+.carousel3d-wrapper {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  user-select: none;
 }
 
-.galleryThumb {
-  width: 60px;
-  height: 88px;
-  object-fit: cover;
+.carousel3d-viewport {
+  width: 200px;
+  height: 140px;
+  perspective: 600px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel3d-scene {
+  width: 80px;
+  height: 120px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel3d-card {
+  position: absolute;
+  width: 80px;
+  height: 120px;
+  backface-visibility: hidden;
+  border-radius: 6px;
+  overflow: hidden;
   border: 2px solid transparent;
-  border-radius: 4px;
   cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.2s, border-color 0.2s, transform 0.2s;
+  transition: border-color 0.3s, box-shadow 0.3s, opacity 0.3s;
 }
 
-.galleryThumb:hover {
-  opacity: 1;
-  transform: scale(1.08);
+.carousel3d-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel3d-card--active {
+  border-color: #ffcc00;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
+}
+
+.carousel3d-btn {
+  background: rgba(46, 42, 38, 0.8);
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  color: #ffcc00;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+}
+
+.carousel3d-btn:hover {
+  background: rgba(255, 204, 0, 0.15);
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+}
+
+.carousel3d-btn:active {
+  transform: scale(0.95);
 }
 
 .galleryThumb--active {

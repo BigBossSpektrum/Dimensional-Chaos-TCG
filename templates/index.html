@@ -1,4 +1,9 @@
 {% extends "layouts/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css">
+{% endblock %}
 
 {% block content %}
     <h1>pagina principal</h1>

@@ -1,0 +1,71 @@
+/* ─── Search Card Page Specific Styles ─── */
+
+/* Multi-card results container */
+.card-cardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 20px;
+}
+
+/* Result divider between cards */
+.card-cardContainer .cardContainer {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 40px;
+}
+
+.card-cardContainer .cardContainer:last-child {
+    border-bottom: none;
+}
+
+/* Search results header */
+.search-results-header {
+    font-family: "Kanit", sans-serif;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #555;
+    padding: 20px 20px 0;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 30px 0;
+}
+
+.pagination a,
+.pagination span {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-family: "Kanit", sans-serif;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.pagination a {
+    background: #2e2a26;
+    color: #fff;
+}
+
+.pagination a:hover {
+    background: #ffcc00;
+    color: #1a1a1a;
+}
+
+.pagination .current {
+    background: #ffcc00;
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+/* No results message */
+.no-results {
+    text-align: center;
+    padding: 60px 20px;
+    font-family: "Kanit", sans-serif;
+    font-size: 1.1rem;
+    color: #888;
+}

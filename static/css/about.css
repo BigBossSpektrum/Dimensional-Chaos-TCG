@@ -1,0 +1,34 @@
+/* ─── About Page Styles ─── */
+
+.about-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 30px;
+}
+
+.about-container h1 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1f1f1f;
+    margin-bottom: 20px;
+}
+
+.about-container p {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 16px;
+}
+
+.about-container a {
+    color: #3a86ff;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.about-container a:hover {
+    color: #206fee;
+    text-decoration: underline;
+}

@@ -1,0 +1,10 @@
+{% load static %}
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showSwalAlert('{{ message.tags }}', '{{ message|escapejs }}', "{% static 'img/fondoDC.png' %}");
+            });
+        </script>
+    {% endfor %}
+{% endif %}

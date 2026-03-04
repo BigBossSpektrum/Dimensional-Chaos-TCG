@@ -64,6 +64,12 @@ class RegisterForm(UserCreationForm):
         model = CustomUser
         fields = ('email', 'username', 'password1', 'password2')
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError('Ya existe una cuenta con este correo electrónico.')
+        return email
+
 
 class PasswordResetRequestForm(forms.Form):
     """Formulario para solicitar recuperación de contraseña."""

@@ -16,13 +16,7 @@
                 {% csrf_token %}
                 <h2>Iniciar Sesion</h2>
 
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
+                {% include 'components/swal_messages.html' %}
 
                 <div class="input-container">
                     <i class="fa-solid fa-envelope"></i>

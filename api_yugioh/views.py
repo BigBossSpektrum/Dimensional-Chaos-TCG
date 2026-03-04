@@ -169,4 +169,5 @@ def random_card(request):
     return render(request, 'random_card.html', context)
 
 def login(request):
-    return render(request, 'login.html')
+    from django.shortcuts import redirect
+    return redirect('user:login')

@@ -16,8 +16,13 @@
         <a href=""><i class="fa-solid fa-language"></i></a>
         <a href=""><i class="fa-solid fa-moon"></i></a>
         <a href=""><i class="fa-solid fa-dollar-sign"></i></a>
-        <a href="{% url 'login' %}" class="btn-login">Login In</a>
-        <a href="" class="btn-signup">Sing Up</a>
+        {% if user.is_authenticated %}
+            <span class="user-greeting">Hola, {{ user.username }}</span>
+            <a href="{% url 'user:logout' %}" class="btn-login">Logout</a>
+        {% else %}
+            <a href="{% url 'user:login' %}" class="btn-login">Log In</a>
+            <a href="{% url 'user:register' %}" class="btn-signup">Sign Up</a>
+        {% endif %}
     </div>
 </div>
 

@@ -23,6 +23,7 @@ from api_yugioh import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('api_yugioh.urls')),
+    path('user/', include('user.urls')),
 ]
 
 

@@ -519,6 +519,17 @@ img {
     color: #3a86ff;
 }
 
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-heading-image {
+    display: block;
+    margin: 0 auto;
+}
+
 .footer-heading {
     color: #ffffff;
     font-size: 16px;
@@ -526,6 +537,7 @@ img {
     margin-bottom: 14px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    text-align: center;
 }
 
 .footer-links {
@@ -534,6 +546,8 @@ img {
     margin: 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 8px;
 }
 

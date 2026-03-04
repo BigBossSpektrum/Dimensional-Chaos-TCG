@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'polls',
     'api_yugioh',
     'fontawesomefree',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,11 @@ MEDIA_ROOT = BASE_DIR / 'media'                 #PARA DESPLEGAR EL PROYECTO EN I
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom User Model
+AUTH_USER_MODEL = 'user.CustomUser'
+
+# Authentication redirects
+LOGIN_URL = '/user/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

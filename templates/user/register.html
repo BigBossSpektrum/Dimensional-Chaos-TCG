@@ -8,13 +8,13 @@
 {% block main_header %}{% endblock %}
 
 {% block content %}
-    
+
 <section>
     <div class="container">
         <div class="login">
-            <form action="{% url 'user:login' %}" method="POST">
+            <form action="{% url 'user:register' %}" method="POST">
                 {% csrf_token %}
-                <h2>Iniciar Sesion</h2>
+                <h2>Crear Cuenta</h2>
 
                 {% if messages %}
                     {% for message in messages %}
@@ -25,31 +25,34 @@
                 {% endif %}
 
                 <div class="input-container">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" name="username" value="{{ form.username.value|default:'' }}" required>
+                    <label for="#">Nombre de usuario</label>
+                </div>
+                <div class="input-container">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" name="username" value="{{ form.username.value|default:'' }}" required>
+                    <input type="email" name="email" value="{{ form.email.value|default:'' }}" required>
                     <label for="#">Email</label>
                 </div>
                 <div class="input-container">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" name="password" required>
-                    <label for="#">Password</label>
+                    <input type="password" name="password1" required>
+                    <label for="#">Contraseña</label>
                 </div>
-                <div class="forgot">
-                    <label for="#">
-                        <input type="checkbox" name="remember_me"> Recordar
-                        <a href="{% url 'user:password_reset_request' %}">Olvide la contraseña</a>
-                    </label>
+                <div class="input-container">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" name="password2" required>
+                    <label for="#">Confirmar contraseña</label>
                 </div>
                 <div>
-                    <button type="submit">Acceder</button>
+                    <button type="submit">Registrarse</button>
                     <div class="register">
-                        <p>No tengo cuenta <a href="{% url 'user:register' %}">Crear una cuenta</a></p>
+                        <p>Ya tengo cuenta <a href="{% url 'user:login' %}">Iniciar sesión</a></p>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
 </section>
+
 {% endblock content %}
-    

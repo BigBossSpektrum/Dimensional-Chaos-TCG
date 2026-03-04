@@ -24,7 +24,7 @@
         {% include "base_header.html" %}
     </sidebar>
     <div class="content">
-        {% include "base_main_header.html" %}  
+        {% block main_header %}{% include "base_main_header.html" %}{% endblock %}  
         {% block content %}{% endblock %}
         {% include "base_footer.html" %}
     </div>

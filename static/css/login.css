@@ -12,7 +12,7 @@ section{
     align-items: center;
     width: 100%;
     min-height: 100vh;
-    background: url(https://wallpapers.com/images/featured-full/yugioh-8a2a9p7gcudgea9f.jpg) no-repeat;
+    background: url('../img/fondoDC.png') no-repeat;
     background-position: center;
     background-size: cover;
 }

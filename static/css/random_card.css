@@ -103,56 +103,54 @@
 
 .cardAtributes {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  padding-top: 15px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding-top: 20px;
   font-family: "Kanit", sans-serif;
   font-weight: 400;
-  font-size: 0.82rem;
-  width: 70%;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  overflow: hidden;
+  font-size: 0.85rem;
+  width: 75%;
+  max-width: 700px;
 }
 
 .cardAtributes .attr-item {
   display: flex;
-  justify-content: space-between;
-  padding: 6px 12px;
-  border-bottom: 1px solid #eee;
-  background: transparent;
-  max-height: none;
-  border-radius: 0;
-}
-
-.cardAtributes .attr-item:nth-child(odd) {
-  border-right: 1px solid #eee;
-}
-
-.cardAtributes .attr-item:nth-last-child(1),
-.cardAtributes .attr-item:nth-last-child(2) {
-  border-bottom: none;
+  flex-direction: column;
+  padding: 4px 8px;
+  background: #2e2a26;
+  border-radius: 8px;
+  min-height: 48px;
+  justify-content: center;
 }
 
 .attr-label {
-  color: #777;
+  color: rgba(255, 255, 255, 0.75);
   font-weight: 500;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
+  font-size: 0.7rem;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+  margin-bottom: 3px;
 }
 
 .attr-value {
   font-weight: 600;
-  color: #222;
+  color: #fff;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+  font-size: 0.95rem;
+}
+
+.attr-value .attr-fa-icon {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .attr-icon {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   vertical-align: middle;
   flex-shrink: 0;
@@ -160,7 +158,6 @@
 
 .cardAtributes .attr-item.attr-full {
   grid-column: 1 / -1;
-  border-right: none;
 }
 
 /* ─── Gallery: Artworks & Sets ─── */

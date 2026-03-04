@@ -102,50 +102,54 @@
         {% if card.attribute or card.race or card.archetype or card.level or card.atk or card.defense or card.card_prices.first %}
         <div class="cardAtributes">
 
+                {% if card.type %}
+                <div class="attr-item"><span class="attr-label">Type</span><span class="attr-value"><i class="fa-solid fa-file-lines attr-fa-icon"></i> {{ card.type }}</span></div>
+                {% endif %}
+
                 {% if card.attribute %}
                 <div class="attr-item"><span class="attr-label">Attribute</span><span class="attr-value"><img src="{% static 'img/attributes/' %}{{ card.attribute }}.png" alt="{{ card.attribute }}" class="attr-icon"> {{ card.attribute }}</span></div>
                 {% endif %}
 
                 {% if card.race %}
-                <div class="attr-item"><span class="attr-label">Type</span><span class="attr-value"><img src="{% static 'img/races/' %}{{ card.race }}.png" alt="{{ card.race }}" class="attr-icon"> {{ card.race }}</span></div>
-                {% endif %}
-
-                {% if card.frame_type %}
-                <div class="attr-item"><span class="attr-label">Frame</span><span class="attr-value">{{ card.frame_type }}</span></div>
-                {% endif %}
-
-                {% if card.archetype %}
-                <div class="attr-item"><span class="attr-label">Archetype</span><span class="attr-value">{{ card.archetype }}</span></div>
+                <div class="attr-item"><span class="attr-label">Typing</span><span class="attr-value"><img src="{% static 'img/races/' %}{{ card.race }}.png" alt="{{ card.race }}" class="attr-icon"> {{ card.race }}</span></div>
                 {% endif %}
 
                 {% if card.level %}
-                <div class="attr-item"><span class="attr-label">Level</span><span class="attr-value">{{ card.level }}</span></div>
+                <div class="attr-item"><span class="attr-label">Level/Rank</span><span class="attr-value"><i class="fa-solid fa-star attr-fa-icon" style="color: #ffd700;"></i> {{ card.level }}</span></div>
                 {% endif %}
 
                 {% if card.atk is not None %}
-                <div class="attr-item"><span class="attr-label">ATK</span><span class="attr-value">{{ card.atk }}</span></div>
+                <div class="attr-item"><span class="attr-label">ATK</span><span class="attr-value"><i class="fa-solid fa-khanda attr-fa-icon"></i> {{ card.atk }}</span></div>
                 {% endif %}
 
                 {% if card.defense is not None %}
-                <div class="attr-item"><span class="attr-label">DEF</span><span class="attr-value">{{ card.defense }}</span></div>
+                <div class="attr-item"><span class="attr-label">DEF</span><span class="attr-value"><i class="fa-solid fa-shield attr-fa-icon"></i> {{ card.defense }}</span></div>
+                {% endif %}
+
+                {% if card.archetype %}
+                <div class="attr-item"><span class="attr-label">Archetype</span><span class="attr-value"><i class="fa-solid fa-chess-rook attr-fa-icon"></i> {{ card.archetype }}</span></div>
+                {% endif %}
+
+                {% if card.frame_type %}
+                <div class="attr-item"><span class="attr-label">Typings</span><span class="attr-value"><i class="fa-solid fa-clipboard-list attr-fa-icon"></i> {{ card.frame_type }}</span></div>
                 {% endif %}
 
                 {% if card.linkval %}
-                <div class="attr-item"><span class="attr-label">Link</span><span class="attr-value">{{ card.linkval }}</span></div>
+                <div class="attr-item"><span class="attr-label">Link</span><span class="attr-value"><i class="fa-solid fa-link attr-fa-icon"></i> {{ card.linkval }}</span></div>
                 {% endif %}
 
                 {% if card.scale is not None %}
-                <div class="attr-item"><span class="attr-label">Scale</span><span class="attr-value">{{ card.scale }}</span></div>
+                <div class="attr-item"><span class="attr-label">Scale</span><span class="attr-value"><i class="fa-solid fa-scale-balanced attr-fa-icon"></i> {{ card.scale }}</span></div>
                 {% endif %}
 
                 {% if card.card_prices.first %}
-                <div class="attr-item"><span class="attr-label">TCG Price</span><span class="attr-value">{{ card.card_prices.first.tcgplayer_price }}$</span></div>
+                <div class="attr-item"><span class="attr-label">TCG Price</span><span class="attr-value"><i class="fa-solid fa-dollar-sign attr-fa-icon"></i> {{ card.card_prices.first.tcgplayer_price }}$</span></div>
                 {% endif %}
 
                 {% if card.card_sets.first %}
-                <div class="attr-item attr-full" id="info-set-name"><span class="attr-label">Set</span><span class="attr-value">{{ card.card_sets.first.set_name }}</span></div>
-                <div class="attr-item" id="info-set-code"><span class="attr-label">Set Code</span><span class="attr-value">{{ card.card_sets.first.set_code }}</span></div>
-                <div class="attr-item" id="info-set-rarity"><span class="attr-label">Rarity</span><span class="attr-value">{{ card.card_sets.first.set_rarity }}</span></div>
+                <div class="attr-item attr-full" id="info-set-name"><span class="attr-label">Set</span><span class="attr-value"><i class="fa-solid fa-box-open attr-fa-icon"></i> {{ card.card_sets.first.set_name }}</span></div>
+                <div class="attr-item" id="info-set-code"><span class="attr-label">Set Code</span><span class="attr-value"><i class="fa-solid fa-barcode attr-fa-icon"></i> {{ card.card_sets.first.set_code }}</span></div>
+                <div class="attr-item" id="info-set-rarity"><span class="attr-label">Rarity</span><span class="attr-value"><i class="fa-solid fa-gem attr-fa-icon"></i> {{ card.card_sets.first.set_rarity }}</span></div>
                 {% endif %}
 
         </div>

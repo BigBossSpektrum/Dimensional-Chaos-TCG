@@ -10,5 +10,6 @@ urlpatterns = [
     path('random_card/', views.random_card, name='random_card'),
     path('card/<int:card_id>/', views.card_detail, name='card_detail'),
     path('search-cards/', views.search_cards, name='search_cards'),
+    path('api/suggest-set-codes/', views.suggest_set_codes, name='suggest_set_codes'),
     path('login/', views.login, name='login'),
 ]

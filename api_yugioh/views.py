@@ -2,9 +2,10 @@ import requests
 import random
 from urllib.parse import quote
 from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
 from django.db.models import Q
 from requests.exceptions import RequestException
-from .models import Card
+from .models import Card, CardSet
 
 api_url = 'https://db.ygoprodeck.com/api/v7/cardinfo.php'
 api_random_url = 'https://db.ygoprodeck.com/api/v7/randomcard.php'
@@ -52,25 +53,66 @@ def card_info(request, card_name):
     return render(request, 'card_info.html', {'card_name': card_name})
 
 def search_cards(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q', '').strip()
+    set_code = request.GET.get('set_code', '').strip()
     cards = Card.objects.none()
     
-    if query:
-        query = query.strip()
+    if query or set_code:
+        filters = Q()
         
         if query:
-            # Buscar en la base de datos local por nombre, arquetipo, tipo o descripción
-            cards = Card.objects.filter(
+            # Buscar también por set_code dentro del campo q
+            set_code_matches = CardSet.objects.filter(
+                set_code__icontains=query
+            ).values_list('card_id', flat=True)
+            
+            filters = (
                 Q(name__icontains=query) |
                 Q(archetype__icontains=query) |
                 Q(type__icontains=query) |
-                Q(desc__icontains=query)
-            ).prefetch_related(
+                Q(desc__icontains=query) |
+                Q(card_id__in=set_code_matches)
+            )
+        
+        if set_code:
+            # Filtro adicional por set_code (desde el hidden input / tag)
+            card_ids = CardSet.objects.filter(
+                set_code__icontains=set_code
+            ).values_list('card_id', flat=True)
+            set_filter = Q(card_id__in=card_ids)
+            filters = (filters & set_filter) if filters else set_filter
+        
+        if filters:
+            cards = Card.objects.filter(filters).prefetch_related(
                 'card_images', 'card_prices', 'card_sets'
-            ).select_related('banlist_info')[:40]
+            ).select_related('banlist_info').distinct()[:40]
 
-    context = {'cards': cards, 'query': query}
+    context = {'cards': cards, 'query': query, 'set_code': set_code}
     return render(request, 'search_card.html', context)
+
+
+def suggest_set_codes(request):
+    """Endpoint AJAX que devuelve set_codes únicos que coincidan con el término."""
+    term = request.GET.get('term', '').strip()
+    results = []
+    
+    if len(term) >= 3:
+        # Obtener set_codes únicos que contengan el término
+        matches = (
+            CardSet.objects
+            .filter(set_code__icontains=term)
+            .values('set_code', 'set_name')
+            .distinct()
+            .order_by('set_code')[:20]
+        )
+        # Eliminar duplicados por set_code (puede haber varias cartas con el mismo set_code)
+        seen = set()
+        for m in matches:
+            if m['set_code'] not in seen:
+                seen.add(m['set_code'])
+                results.append({'set_code': m['set_code'], 'set_name': m['set_name']})
+    
+    return JsonResponse(results, safe=False)
 
 def card_detail(request, card_id):
     """Vista de detalle de una carta desde la base de datos local."""

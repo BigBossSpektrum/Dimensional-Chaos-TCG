@@ -51,7 +51,7 @@ sidebar{
     align-items: start;
     padding-left: 10px;
     font-size: 18px;
-    max-width: 100%;
+    max-width: 320px;
     height: 100%;
 }
 
@@ -106,8 +106,10 @@ sidebar{
 }
 
 .link_logoLinked{
-    width: 50px;
-    border-radius: 50px;
+    width: 90%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 .mainMenu_link{
@@ -490,10 +492,9 @@ img {
 }
 
 .footer-logo img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
 }
 
 .footer-description {

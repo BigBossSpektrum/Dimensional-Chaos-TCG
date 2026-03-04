@@ -40,6 +40,7 @@
                          data-set-rarity="{{ set.set_rarity }}"
                          data-set-rarity-code="{{ set.set_rarity_code }}"
                          data-set-price="{{ set.set_price }}"
+                         data-tcg-price="{% if card.card_prices.0 %}{{ card.card_prices.0.tcgplayer_price }}{% endif %}"
                          onclick="switchSet(this)">
                         <span class="setThumb-code">{{ set.set_code }}</span>
                         <span class="setThumb-rarity">{{ set.set_rarity_code }}</span>
@@ -98,8 +99,8 @@
                 <div class="attr-item"><span class="attr-label">DEF</span><span class="attr-value">{{ card.def }}</span></div>
                 {% endif %}
 
-                {% if card.card_prices.0.tcgplayer_price %}
-                <div class="attr-item"><span class="attr-label">TCG Price</span><span class="attr-value">{{ card.card_prices.0.tcgplayer_price }}$</span></div>
+                {% if card.card_sets.0.set_code %}
+                <div class="attr-item" id="info-set-price"><span class="attr-label">TCG Price</span><span class="attr-value">{% if card.card_sets.0.set_price and card.card_sets.0.set_price != 0 %}{{ card.card_sets.0.set_price }}{% else %}{{ card.card_prices.0.tcgplayer_price }}{% endif %}$</span></div>
                 {% endif %}
 
                 {% if card.card_sets.0.set_code %}
@@ -135,7 +136,11 @@ function switchSet(setThumb) {
     if (setName) setName.querySelector('.attr-value').textContent = setThumb.dataset.setName;
     if (setCode) setCode.querySelector('.attr-value').textContent = setThumb.dataset.setCode;
     if (setRarity) setRarity.querySelector('.attr-value').textContent = setThumb.dataset.setRarity;
-    if (setPrice) setPrice.querySelector('.attr-value').textContent = setThumb.dataset.setPrice + '$';
+    if (setPrice) {
+        var price = parseFloat(setThumb.dataset.setPrice);
+        var displayPrice = (price > 0) ? setThumb.dataset.setPrice : setThumb.dataset.tcgPrice;
+        setPrice.querySelector('.attr-value').textContent = displayPrice + '$';
+    }
     
     var allSets = setThumb.parentElement.querySelectorAll('.setThumb');
     allSets.forEach(function(s) { s.classList.remove('setThumb--active'); });

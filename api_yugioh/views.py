@@ -114,6 +114,39 @@ def suggest_set_codes(request):
     
     return JsonResponse(results, safe=False)
 
+
+def suggest_cards(request):
+    """Endpoint AJAX que devuelve una vista previa de cartas que coincidan con el término."""
+    term = request.GET.get('term', '').strip()
+    results = []
+
+    if len(term) >= 3:
+        # Buscar cartas por nombre o set_code
+        set_code_ids = CardSet.objects.filter(
+            set_code__icontains=term
+        ).values_list('card_id', flat=True)
+
+        cards = (
+            Card.objects
+            .filter(
+                Q(name__icontains=term) |
+                Q(card_id__in=set_code_ids)
+            )
+            .prefetch_related('card_images')
+            .distinct()[:8]
+        )
+
+        for card in cards:
+            img = card.card_images.first()
+            results.append({
+                'card_id': card.card_id,
+                'name': card.name,
+                'type': card.type,
+                'image_url_small': img.image_url_small if img else '',
+            })
+
+    return JsonResponse(results, safe=False)
+
 def card_detail(request, card_id):
     """Vista de detalle de una carta desde la base de datos local."""
     card = get_object_or_404(

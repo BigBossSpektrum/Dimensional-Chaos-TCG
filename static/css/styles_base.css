@@ -242,59 +242,170 @@ img {
     color: #ffffff;
 }
 
-.setcode-suggestions {
+/* ===== Search Overlay ===== */
+
+.search-overlay {
     display: none;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 0;
     left: 0;
-    width: 320px;
-    max-height: 280px;
-    overflow-y: auto;
-    background-color: #2b2b2b;
-    border: 1px solid #444;
-    border-radius: 8px;
-    z-index: 1000;
-    margin-top: 4px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99998;
+    backdrop-filter: blur(2px);
 }
 
-.setcode-suggestions.active {
+.search-overlay.active {
     display: block;
 }
 
-.setcode-suggestion-item {
-    padding: 8px 12px;
+/* ===== Search Preview Dropdown ===== */
+
+.search-preview {
+    display: none;
+    position: fixed;
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    max-height: 480px;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 0 0 8px 8px;
+    z-index: 99999;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+
+.search-preview.active {
+    display: block;
+}
+
+/* Header: "Search for ... in" */
+.search-preview-header {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    background-color: #fafafa;
+}
+
+.search-preview-header strong {
+    color: #222;
+}
+
+/* Card suggestion item - list style like TCGPlayer */
+.preview-card-item {
+    display: block;
+    padding: 10px 16px;
     cursor: pointer;
-    color: #e0e0e0;
-    font-size: 13px;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.1s;
+}
+
+.preview-card-item:last-of-type {
+    border-bottom: 1px solid #eee;
+}
+
+.preview-card-item:hover,
+.preview-card-item.active {
+    background-color: #f5f5f5;
+}
+
+.preview-card-name {
+    font-size: 15px;
+    color: #222;
+    line-height: 1.3;
+}
+
+.preview-card-name strong {
+    font-weight: 700;
+    font-style: italic;
+    color: #000;
+}
+
+.preview-card-category {
+    font-size: 12px;
+    color: #999;
+    margin-top: 1px;
+}
+
+/* Set code items */
+.preview-setcode-item {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-    border-bottom: 1px solid #3a3a3a;
-    transition: background-color 0.15s;
+    align-items: center;
+    padding: 10px 16px;
+    cursor: pointer;
+    color: #333;
+    font-size: 14px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.1s;
 }
 
-.setcode-suggestion-item:last-child {
-    border-bottom: none;
+.preview-setcode-item:last-of-type {
+    border-bottom: 1px solid #eee;
 }
 
-.setcode-suggestion-item:hover,
-.setcode-suggestion-item.active {
-    background-color: #3d3d6b;
+.preview-setcode-item:hover,
+.preview-setcode-item.active {
+    background-color: #f5f5f5;
 }
 
-.setcode-suggestion-item .set-code-label {
-    font-weight: bold;
-    color: #7eb8ff;
-    white-space: nowrap;
+.preview-setcode-item .set-code-label {
+    font-weight: 700;
+    color: #222;
 }
 
-.setcode-suggestion-item .set-name-label {
-    color: #b0b0b0;
+.preview-setcode-item .set-name-label {
+    color: #999;
+    font-size: 13px;
     text-align: right;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+/* Section titles */
+.search-preview-section-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+}
+
+.search-preview-section-title i {
+    font-size: 14px;
+    color: #888;
+}
+
+/* View all link */
+.preview-view-all {
+    display: block;
+    text-align: center;
+    padding: 10px 16px;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #fafafa;
+    border-top: 1px solid #eee;
+    transition: background-color 0.1s;
+    text-decoration: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.preview-view-all:hover {
+    background-color: #eef2ff;
+    color: #1d4ed8;
 }
 
 /* ===== Set Code Tag ===== */

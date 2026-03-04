@@ -8,7 +8,6 @@
         <div class="search-input-wrapper">
             <input id="sendData" type="search" name="q" value="{{ query }}" placeholder="Search cards by name or Set Code (e.g. LOB-005)" autocomplete="off">
             <input type="hidden" id="setCodeHidden" name="set_code" value="{{ set_code }}">
-            <div id="setCodeSuggestions" class="setcode-suggestions"></div>
         </div>
         <a href="{% url 'random_card' %}"><i class="fa-solid fa-shuffle" style="color: #ffffff;"></i></a>
     </form>
@@ -21,3 +20,6 @@
         <a href="" class="btn-signup">Sing Up</a>
     </div>
 </div>
+
+<div id="searchOverlay" class="search-overlay"></div>
+<div id="searchPreview" class="search-preview"></div>

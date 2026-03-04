@@ -11,5 +11,6 @@ urlpatterns = [
     path('card/<int:card_id>/', views.card_detail, name='card_detail'),
     path('search-cards/', views.search_cards, name='search_cards'),
     path('api/suggest-set-codes/', views.suggest_set_codes, name='suggest_set_codes'),
+    path('api/suggest-cards/', views.suggest_cards, name='suggest_cards'),
     path('login/', views.login, name='login'),
 ]

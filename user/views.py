@@ -32,6 +32,26 @@ def send_verification_email(user, token):
     )
 
 
+def send_password_reset_email(user, token):
+    """Envía el correo de recuperación de contraseña al usuario."""
+    reset_url = f'{settings.SITE_URL}/user/password-reset/{token.token}/'
+    
+    html_message = render_to_string('user/emails/password_reset_email.html', {
+        'user': user,
+        'reset_url': reset_url,
+    })
+    plain_message = strip_tags(html_message)
+    
+    send_mail(
+        subject='Recupera tu contraseña - Dimensional Chaos TCG',
+        message=plain_message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        html_message=html_message,
+        fail_silently=False,
+    )
+
+
 def user_login(request):
     """Vista para iniciar sesión."""
     if request.user.is_authenticated:
@@ -125,12 +145,18 @@ def password_reset_request(request):
                 PasswordResetToken.objects.filter(user=user, used=False).update(used=True)
                 # Crear nuevo token
                 token = PasswordResetToken.objects.create(user=user)
-                # TODO: Enviar email con el link de recuperación
-                # send_password_reset_email(user, token)
-                messages.success(
-                    request,
-                    'Se ha enviado un enlace de recuperación a tu correo electrónico.'
-                )
+                # Enviar email con el link de recuperación
+                try:
+                    send_password_reset_email(user, token)
+                    messages.success(
+                        request,
+                        'Se ha enviado un enlace de recuperación a tu correo electrónico.'
+                    )
+                except Exception:
+                    messages.error(
+                        request,
+                        'Hubo un error al enviar el correo. Intenta de nuevo más tarde.'
+                    )
             except CustomUser.DoesNotExist:
                 # No revelar si el email existe o no (seguridad)
                 messages.success(
@@ -161,6 +187,9 @@ def password_reset_confirm(request, token):
         if form.is_valid():
             user = reset_token.user
             user.password = make_password(form.cleaned_data['new_password1'])
+            # Si el usuario recibió el email de reset, su email está verificado
+            if not user.is_email_verified:
+                user.is_email_verified = True
             user.save()
             reset_token.used = True
             reset_token.save()

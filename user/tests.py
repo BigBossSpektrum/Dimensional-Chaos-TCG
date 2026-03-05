@@ -5,6 +5,7 @@ from django.conf import settings
 
 from .models import CustomUser, EmailVerificationToken, PasswordResetToken
 from .views import send_verification_email, send_password_reset_email, send_account_activity_email
+from .validators import ISO27001PasswordValidator, MaximumLengthValidator
 
 
 # Usar backend de memoria para capturar emails en los tests
@@ -578,3 +579,229 @@ class AccountActivityEmailTests(TestCase):
         email = mail.outbox[0]
         html_content = email.alternatives[0][0]
         self.assertIn('Cambio de contrase', html_content)
+
+
+class ISO27001PasswordValidatorTests(TestCase):
+    """Tests para el validador de contraseñas ISO 27001."""
+
+    def setUp(self):
+        self.validator = ISO27001PasswordValidator(min_length=12)
+
+    # --- Tests de longitud ---
+    def test_password_too_short(self):
+        """Contraseña menor a 12 caracteres debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('Abc1!short')
+        codes = [e.code for e in ctx.exception.error_list]
+        self.assertIn('password_too_short', codes)
+
+    def test_password_minimum_length(self):
+        """Contraseña de exactamente 12 caracteres válidos debe pasar."""
+        # 12 chars: mayúscula, minúscula, número, especial, sin secuencias
+        self.validator.validate('Xpm1r9!@Wz3k')  # No debe lanzar excepción
+
+    # --- Tests de mayúscula ---
+    def test_password_no_uppercase(self):
+        """Contraseña sin mayúscula debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('abcdef1234!@')
+        codes = [e.code for e in ctx.exception.error_list]
+        self.assertIn('password_no_upper', codes)
+
+    # --- Tests de minúscula ---
+    def test_password_no_lowercase(self):
+        """Contraseña sin minúscula debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('ABCXYZ1234!@')
+        codes = [e.code for e in ctx.exception.error_list]
+        self.assertIn('password_no_lower', codes)
+
+    # --- Tests de número ---
+    def test_password_no_digit(self):
+        """Contraseña sin número debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('Abcdefghij!@')
+        codes = [e.code for e in ctx.exception.error_list]
+        self.assertIn('password_no_digit', codes)
+
+    # --- Tests de carácter especial ---
+    def test_password_no_special_char(self):
+        """Contraseña sin carácter especial debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('Abcdefgh1234')
+        codes = [e.code for e in ctx.exception.error_list]
+        self.assertIn('password_no_special', codes)
+
+    # --- Tests de caracteres repetidos ---
+    def test_password_repeated_chars(self):
+        """Contraseña con 4+ caracteres iguales consecutivos debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('Aaaaa1234!@bc')
+        codes = [e.code for e in ctx.exception.error_list]
+        self.assertIn('password_repeated_chars', codes)
+
+    def test_password_three_repeated_chars_ok(self):
+        """Contraseña con 3 caracteres iguales consecutivos debe pasar."""
+        self.validator.validate('Aaab9173!@cd')  # No debe lanzar excepción
+
+    # --- Tests de secuencias numéricas ---
+    def test_password_sequential_digits_ascending(self):
+        """Contraseña con secuencia numérica ascendente (1234) debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('Abcx1234!@zz')
+        codes = [e.code for e in ctx.exception.error_list]
+        self.assertIn('password_sequential_digits', codes)
+
+    def test_password_sequential_digits_descending(self):
+        """Contraseña con secuencia numérica descendente (4321) debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('Abcx4321!@zz')
+        codes = [e.code for e in ctx.exception.error_list]
+        self.assertIn('password_sequential_digits', codes)
+
+    def test_password_non_sequential_digits_ok(self):
+        """Contraseña con números no secuenciales debe pasar."""
+        self.validator.validate('Abcx9173!@zz')  # No debe lanzar excepción
+
+    # --- Tests de secuencias alfabéticas ---
+    def test_password_sequential_letters_ascending(self):
+        """Contraseña con secuencia alfabética ascendente (abcd) debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('Xabcd917!@zz')
+        codes = [e.code for e in ctx.exception.error_list]
+        self.assertIn('password_sequential_letters', codes)
+
+    def test_password_sequential_letters_descending(self):
+        """Contraseña con secuencia alfabética descendente (dcba) debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('Xdcba917!@zz')
+        codes = [e.code for e in ctx.exception.error_list]
+        self.assertIn('password_sequential_letters', codes)
+
+    def test_password_non_sequential_letters_ok(self):
+        """Contraseña con letras no secuenciales debe pasar."""
+        self.validator.validate('Xpmrz9173!@w')  # No debe lanzar excepción
+
+    # --- Tests de contraseña completamente válida ---
+    def test_valid_strong_password(self):
+        """Una contraseña fuerte que cumple todos los requisitos debe pasar."""
+        self.validator.validate('M!p@ssW0rd#9x')  # No debe lanzar excepción
+
+    def test_multiple_errors_at_once(self):
+        """Una contraseña que falla en múltiples reglas debe reportar todos los errores."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError) as ctx:
+            self.validator.validate('abc')  # Falla: corta, sin mayúscula, sin número, sin especial
+        # Debe tener múltiples errores
+        self.assertGreater(len(ctx.exception.error_list), 1)
+
+    # --- Test de get_help_text ---
+    def test_help_text(self):
+        """Verificar que el texto de ayuda contiene las reglas."""
+        help_text = self.validator.get_help_text()
+        self.assertIn('12', help_text)
+        self.assertIn('mayúscula', help_text)
+        self.assertIn('minúscula', help_text)
+        self.assertIn('número', help_text)
+        self.assertIn('especial', help_text)
+
+
+class MaximumLengthValidatorTests(TestCase):
+    """Tests para el validador de longitud máxima."""
+
+    def setUp(self):
+        self.validator = MaximumLengthValidator(max_length=128)
+
+    def test_password_within_max_length(self):
+        """Contraseña dentro del límite máximo debe pasar."""
+        self.validator.validate('A' * 128)  # No debe lanzar excepción
+
+    def test_password_exceeds_max_length(self):
+        """Contraseña que excede el límite máximo debe fallar."""
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError):
+            self.validator.validate('A' * 129)
+
+    def test_help_text(self):
+        """Verificar texto de ayuda del validador de longitud máxima."""
+        help_text = self.validator.get_help_text()
+        self.assertIn('128', help_text)
+
+
+@override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+class PasswordPolicyIntegrationTests(TestCase):
+    """Tests de integración: política de contraseña en registro y reset."""
+
+    def test_register_weak_password_fails(self):
+        """Registro con contraseña débil debe fallar."""
+        response = self.client.post(reverse('user:register'), {
+            'username': 'newuser',
+            'email': 'newuser@example.com',
+            'password1': 'simple',
+            'password2': 'simple',
+        })
+        # No debe crear el usuario
+        self.assertFalse(CustomUser.objects.filter(email='newuser@example.com').exists())
+
+    def test_register_strong_password_succeeds(self):
+        """Registro con contraseña fuerte debe funcionar."""
+        self.client.post(reverse('user:register'), {
+            'username': 'newuser',
+            'email': 'newuser@example.com',
+            'password1': 'M!p@ssW0rd#9x',
+            'password2': 'M!p@ssW0rd#9x',
+        })
+        self.assertTrue(CustomUser.objects.filter(email='newuser@example.com').exists())
+
+    def test_password_reset_weak_password_fails(self):
+        """Cambio de contraseña con contraseña débil debe fallar."""
+        user = CustomUser.objects.create_user(
+            username='testuser',
+            email='testuser@example.com',
+            password='M!p@ssW0rd#9x',
+            is_email_verified=True,
+        )
+        token = PasswordResetToken.objects.create(user=user)
+
+        self.client.post(
+            reverse('user:password_reset_confirm', kwargs={'token': token.token}),
+            {
+                'new_password1': 'weak',
+                'new_password2': 'weak',
+            }
+        )
+
+        # La contraseña no debe haber cambiado
+        user.refresh_from_db()
+        self.assertTrue(user.check_password('M!p@ssW0rd#9x'))
+
+    def test_password_reset_strong_password_succeeds(self):
+        """Cambio de contraseña con contraseña fuerte debe funcionar."""
+        user = CustomUser.objects.create_user(
+            username='testuser',
+            email='testuser@example.com',
+            password='M!p@ssW0rd#9x',
+            is_email_verified=True,
+        )
+        token = PasswordResetToken.objects.create(user=user)
+
+        self.client.post(
+            reverse('user:password_reset_confirm', kwargs={'token': token.token}),
+            {
+                'new_password1': 'N3w$ecureP@ss!',
+                'new_password2': 'N3w$ecureP@ss!',
+            }
+        )
+
+        user.refresh_from_db()
+        self.assertTrue(user.check_password('N3w$ecureP@ss!'))

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.password_validation import validate_password
 from .models import CustomUser
 
 
@@ -105,4 +106,6 @@ class PasswordResetConfirmForm(forms.Form):
         password2 = cleaned_data.get('new_password2')
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError('Las contraseñas no coinciden.')
+        if password1:
+            validate_password(password1)
         return cleaned_data

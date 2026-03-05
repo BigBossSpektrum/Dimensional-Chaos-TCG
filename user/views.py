@@ -7,9 +7,18 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
+from django.utils import timezone
 
 from .forms import LoginForm, RegisterForm, PasswordResetRequestForm, PasswordResetConfirmForm
 from .models import CustomUser, PasswordResetToken, EmailVerificationToken
+
+
+def get_client_ip(request):
+    """Obtiene la dirección IP del cliente."""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR', 'Desconocida')
 
 
 def send_verification_email(user, token):
@@ -52,6 +61,28 @@ def send_password_reset_email(user, token):
     )
 
 
+def send_account_activity_email(user, activity_type, ip_address):
+    """Envía un correo de notificación de actividad en la cuenta."""
+    activity_date = timezone.now().strftime('%d/%m/%Y a las %H:%M:%S')
+
+    html_message = render_to_string('user/emails/account_activity_email.html', {
+        'user': user,
+        'activity_type': activity_type,
+        'activity_date': activity_date,
+        'ip_address': ip_address,
+    })
+    plain_message = strip_tags(html_message)
+
+    send_mail(
+        subject=f'Actividad en tu cuenta - Dimensional Chaos TCG',
+        message=plain_message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        html_message=html_message,
+        fail_silently=True,
+    )
+
+
 def user_login(request):
     """Vista para iniciar sesión."""
     if request.user.is_authenticated:
@@ -79,6 +110,12 @@ def user_login(request):
             if not form.cleaned_data.get('remember_me'):
                 request.session.set_expiry(0)  # Sesión expira al cerrar navegador
             login(request, user)
+            # Notificar al usuario por email sobre el inicio de sesión
+            send_account_activity_email(
+                user,
+                activity_type='Inicio de sesión',
+                ip_address=get_client_ip(request),
+            )
             messages.success(request, f'¡Bienvenido, {user.username}!')
             return redirect('/')
         else:
@@ -193,6 +230,12 @@ def password_reset_confirm(request, token):
             user.save()
             reset_token.used = True
             reset_token.save()
+            # Notificar al usuario sobre el cambio de contraseña
+            send_account_activity_email(
+                user,
+                activity_type='Cambio de contraseña',
+                ip_address=get_client_ip(request),
+            )
             messages.success(request, 'Contraseña actualizada correctamente. Ya puedes iniciar sesión.')
             return redirect('user:login')
     else:

@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 
 from .models import CustomUser, EmailVerificationToken, PasswordResetToken
-from .views import send_verification_email, send_password_reset_email
+from .views import send_verification_email, send_password_reset_email, send_account_activity_email
 
 
 # Usar backend de memoria para capturar emails en los tests
@@ -473,3 +473,108 @@ class EmailTokenExpirationTests(TestCase):
         token.save()
 
         self.assertFalse(token.is_valid)
+
+
+@override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+class AccountActivityEmailTests(TestCase):
+    """Tests para el correo de notificación de actividad de cuenta."""
+
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username='testuser',
+            email='testuser@example.com',
+            password='TestPass123!',
+            is_email_verified=True,
+        )
+
+    def test_send_account_activity_email_success(self):
+        """Verificar que se envía el correo de actividad correctamente."""
+        send_account_activity_email(self.user, 'Inicio de sesión', '127.0.0.1')
+
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_account_activity_email_subject(self):
+        """Verificar que el asunto del correo de actividad es correcto."""
+        send_account_activity_email(self.user, 'Inicio de sesión', '127.0.0.1')
+
+        self.assertEqual(mail.outbox[0].subject, 'Actividad en tu cuenta - Dimensional Chaos TCG')
+
+    def test_account_activity_email_recipient(self):
+        """Verificar que el correo se envía al email del usuario."""
+        send_account_activity_email(self.user, 'Inicio de sesión', '192.168.1.1')
+
+        self.assertIn(self.user.email, mail.outbox[0].to)
+
+    def test_account_activity_email_contains_activity_type(self):
+        """Verificar que el correo contiene el tipo de actividad."""
+        send_account_activity_email(self.user, 'Inicio de sesión', '127.0.0.1')
+
+        email = mail.outbox[0]
+        html_content = email.alternatives[0][0]
+        self.assertIn('Inicio de sesi', html_content)
+
+    def test_account_activity_email_contains_ip(self):
+        """Verificar que el correo contiene la dirección IP."""
+        send_account_activity_email(self.user, 'Inicio de sesión', '192.168.1.100')
+
+        email = mail.outbox[0]
+        html_content = email.alternatives[0][0]
+        self.assertIn('192.168.1.100', html_content)
+
+    def test_account_activity_email_contains_username(self):
+        """Verificar que el correo contiene el nombre de usuario."""
+        send_account_activity_email(self.user, 'Cambio de contraseña', '127.0.0.1')
+
+        email = mail.outbox[0]
+        html_content = email.alternatives[0][0]
+        self.assertIn(self.user.username, html_content)
+
+    def test_account_activity_email_contains_support_info(self):
+        """Verificar que el correo contiene la info de soporte."""
+        send_account_activity_email(self.user, 'Inicio de sesión', '127.0.0.1')
+
+        email = mail.outbox[0]
+        html_content = email.alternatives[0][0]
+        self.assertIn('dimensionalchaostcg@gmail.com', html_content)
+        self.assertIn('No reconoces esta actividad', html_content)
+
+    def test_login_sends_activity_email(self):
+        """Verificar que al iniciar sesión se envía email de actividad."""
+        self.client.post(reverse('user:login'), {
+            'username': 'testuser@example.com',
+            'password': 'TestPass123!',
+        })
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('Actividad en tu cuenta', mail.outbox[0].subject)
+
+    def test_password_reset_confirm_sends_activity_email(self):
+        """Verificar que al cambiar contraseña se envía email de actividad."""
+        token = PasswordResetToken.objects.create(user=self.user)
+
+        self.client.post(
+            reverse('user:password_reset_confirm', kwargs={'token': token.token}),
+            {
+                'new_password1': 'NewSecurePass456!',
+                'new_password2': 'NewSecurePass456!',
+            }
+        )
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('Actividad en tu cuenta', mail.outbox[0].subject)
+
+    def test_activity_email_for_password_change_type(self):
+        """Verificar que el email de cambio de contraseña muestra el tipo correcto."""
+        token = PasswordResetToken.objects.create(user=self.user)
+
+        self.client.post(
+            reverse('user:password_reset_confirm', kwargs={'token': token.token}),
+            {
+                'new_password1': 'NewSecurePass456!',
+                'new_password2': 'NewSecurePass456!',
+            }
+        )
+
+        email = mail.outbox[0]
+        html_content = email.alternatives[0][0]
+        self.assertIn('Cambio de contrase', html_content)

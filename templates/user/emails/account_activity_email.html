@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a2e;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #1a1a2e; padding: 40px 0;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="background-color: #16213e; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #0f3460, #533483); padding: 30px 40px; text-align: center;">
+                            <h1 style="color: #e94560; margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 2px;">
+                                Dimensional Chaos TCG
+                            </h1>
+                        </td>
+                    </tr>
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 40px;">
+                            <h2 style="color: #ffffff; margin: 0 0 20px 0; font-size: 22px;">
+                                Actividad detectada en tu cuenta 🔔
+                            </h2>
+                            <p style="color: #b0b0b0; font-size: 16px; line-height: 1.6; margin: 0 0 15px 0;">
+                                Hola, <strong style="color: #ffffff;">{{ user.username }}</strong>.
+                            </p>
+                            <p style="color: #b0b0b0; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Se ha registrado la siguiente actividad en tu cuenta de
+                                <strong style="color: #e94560;">Dimensional Chaos TCG</strong>:
+                            </p>
+                            <!-- Activity Details -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #1a1a3e; border-radius: 8px; border-left: 4px solid #e94560;">
+                                <tr>
+                                    <td style="padding: 20px 25px;">
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td style="padding: 5px 0;">
+                                                    <span style="color: #888; font-size: 14px;">Actividad:</span>
+                                                    <span style="color: #ffffff; font-size: 14px; font-weight: bold; margin-left: 10px;">{{ activity_type }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px 0;">
+                                                    <span style="color: #888; font-size: 14px;">Fecha y hora:</span>
+                                                    <span style="color: #ffffff; font-size: 14px; margin-left: 10px;">{{ activity_date }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px 0;">
+                                                    <span style="color: #888; font-size: 14px;">Dirección IP:</span>
+                                                    <span style="color: #ffffff; font-size: 14px; margin-left: 10px;">{{ ip_address }}</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #b0b0b0; font-size: 16px; line-height: 1.6; margin: 25px 0 15px 0;">
+                                Si fuiste tú, no necesitas hacer nada. Tu cuenta está segura.
+                            </p>
+
+                            <hr style="border: none; border-top: 1px solid #2a2a4a; margin: 25px 0;">
+
+                            <!-- Warning -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #2a1a1a; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <tr>
+                                    <td style="padding: 20px 25px;">
+                                        <p style="color: #ff6b6b; font-size: 15px; font-weight: bold; margin: 0 0 10px 0;">
+                                            ⚠️ ¿No reconoces esta actividad?
+                                        </p>
+                                        <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6; margin: 0;">
+                                            Si no reconoces esta actividad, te recomendamos cambiar tu contraseña inmediatamente
+                                            y contactar a nuestro equipo de soporte para más información:
+                                        </p>
+                                        <p style="margin: 15px 0 0 0;">
+                                            <a href="mailto:dimensionalchaostcg@gmail.com" 
+                                               style="color: #e94560; font-size: 14px; text-decoration: underline;">
+                                                dimensionalchaostcg@gmail.com
+                                            </a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #0f3460; padding: 20px 40px; text-align: center;">
+                            <p style="color: #666; font-size: 12px; margin: 0;">
+                                &copy; 2026 Dimensional Chaos TCG. Todos los derechos reservados.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

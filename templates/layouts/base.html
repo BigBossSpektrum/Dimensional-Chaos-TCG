@@ -23,6 +23,7 @@
     <script src="{% static 'js/swalAlert.js' %}" defer></script>
 </head>
 <body class="wrapper" onload="fetchCards()">
+    <div class="sidebar-mobile-overlay" id="sidebarOverlay"></div>
     <sidebar>
         {% include "base_header.html" %}
     </sidebar>
@@ -39,4 +40,37 @@
 <script src="{% static 'js/setCodeAutocomplete.js' %}" defer></script>
 
 {% comment %} <script src="{% static 'js/scripts_base.js' %}"></script> {% endcomment %}
+
+<script>
+(function () {
+    document.addEventListener('DOMContentLoaded', function () {
+        var mobileBtn = document.getElementById('mobileMenuBtn');
+        var overlay = document.getElementById('sidebarOverlay');
+        var sidebarEl = document.querySelector('sidebar');
+
+        function openSidebar() {
+            if (!sidebarEl) return;
+            document.body.classList.remove('sidebar-collapsed');
+            sidebarEl.classList.add('mobile-open');
+            if (overlay) overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            if (!sidebarEl) return;
+            sidebarEl.classList.remove('mobile-open');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if (mobileBtn) mobileBtn.addEventListener('click', openSidebar);
+        if (overlay) overlay.addEventListener('click', closeSidebar);
+
+        /* En tablet, colapsar automáticamente el sidebar al cargar */
+        if (window.innerWidth <= 1024) {
+            document.body.classList.add('sidebar-collapsed');
+        }
+    });
+})();
+</script>
 </html>

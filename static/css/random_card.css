@@ -488,3 +488,77 @@
   background: #2e2a26;
   box-shadow: 0 0 8px rgba(255, 204, 0, 0.45);
 }
+
+/* ===== Responsivo ===== */
+
+/* Tablet (≤ 1024px) */
+@media (max-width: 1024px) {
+  .cardDescriptionContainer {
+    width: 100%;
+  }
+
+  .cardAtributes {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Móvil (≤ 768px) */
+@media (max-width: 768px) {
+  .cardContainer {
+    flex-direction: column;
+    padding-top: 16px;
+    padding-bottom: 30px;
+    gap: 16px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .leftSectionContainer {
+    flex-basis: auto;
+    width: 100%;
+    align-items: center;
+  }
+
+  .rightSectionContainer {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .cardImageSection {
+    min-width: unset;
+    max-width: 240px;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0 auto;
+  }
+
+  .cardAtributes {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .cardDescriptionContainer {
+    width: 100%;
+  }
+
+  .card-desc {
+    max-width: 100%;
+  }
+
+  .cardGallery {
+    padding: 0 8px;
+  }
+}
+
+/* Móvil pequeño (≤ 480px) */
+@media (max-width: 480px) {
+  .cardImageSection {
+    max-width: 200px;
+  }
+
+  .cardAtributes {
+    gap: 8px;
+  }
+}

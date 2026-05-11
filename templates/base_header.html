@@ -1,9 +1,13 @@
 {% load static %}
 
 <nav class="navbar_sidebar_style">
+  <button class="sidebar-toggle-btn" id="sidebarToggle" title="Colapsar">
+    <i class="fa-solid fa-angles-left"></i>
+  </button>
   <div class="link_styledMenu">
     <a class="link_styledLink" href="{% url 'home' %}">
-      <img class="link_logoLinked" src="{% static 'img/logoDC.png' %}" alt="Dimensional Chaos logo">
+      <img class="link_logoLinked link_logo--full" src="{% static 'img/logoDC.png' %}" alt="Dimensional Chaos logo">
+      <img class="link_logo--mini" src="{% static 'img/miniLogo.png' %}" alt="Dimensional Chaos logo">
     </a>
   </div>
   <div  class="mainMenu_separador pt-2">
@@ -68,6 +72,26 @@
 
 </nav>
 
+<script>
+(function () {
+    var btn = document.getElementById('sidebarToggle');
+    if (!btn) return;
+    var icon = btn.querySelector('i');
 
+    function apply(collapsed) {
+        document.body.classList.toggle('sidebar-collapsed', collapsed);
+        icon.className = collapsed ? 'fa-solid fa-angles-right' : 'fa-solid fa-angles-left';
+    }
 
+    btn.addEventListener('click', function () {
+        var next = !document.body.classList.contains('sidebar-collapsed');
+        apply(next);
+        try { localStorage.setItem('sidebarCollapsed', next); } catch (e) {}
+    });
+
+    try {
+        if (localStorage.getItem('sidebarCollapsed') === 'true') apply(true);
+    } catch (e) {}
+})();
+</script>
 

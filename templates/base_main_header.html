@@ -4,6 +4,10 @@
 
 <div class="mainMenu">
 
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
     <form class="mainMenu_search" method="GET" action="{% url 'search_cards' %}">
         <div class="search-input-wrapper">
             <input id="sendData" type="search" name="q" value="{{ query }}" placeholder="Search cards by name or Set Code (e.g. LOB-005)" autocomplete="off">

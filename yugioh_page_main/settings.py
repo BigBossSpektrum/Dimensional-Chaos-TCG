@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #owned Apps
-    'polls',
     'api_yugioh',
     'fontawesomefree',
     'user',
@@ -105,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS': {
-            'min_length': 12,
+            'min_length': 8,
         }
     },
     {
@@ -117,13 +116,13 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'user.validators.ISO27001PasswordValidator',
         'OPTIONS': {
-            'min_length': 12,
+            'min_length': 8,
         }
     },
     {
         'NAME': 'user.validators.MaximumLengthValidator',
         'OPTIONS': {
-            'max_length': 128,
+            'max_length': 12,
         }
     },
 ]

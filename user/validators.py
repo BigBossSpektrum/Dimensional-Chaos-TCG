@@ -8,7 +8,7 @@ class ISO27001PasswordValidator:
     Validador de contraseñas basado en la política ISO 27001.
     
     Requisitos:
-    - Mínimo 12 caracteres
+    - Mínimo 8 caracteres
     - Al menos 1 letra mayúscula
     - Al menos 1 letra minúscula
     - Al menos 1 número
@@ -18,7 +18,7 @@ class ISO27001PasswordValidator:
     - No puede contener secuencias alfabéticas (abc, cba)
     """
 
-    def __init__(self, min_length=12):
+    def __init__(self, min_length=8):
         self.min_length = min_length
 
     def validate(self, password, user=None):
@@ -149,7 +149,7 @@ class MaximumLengthValidator:
     Previene ataques DoS por contraseñas extremadamente largas.
     """
 
-    def __init__(self, max_length=128):
+    def __init__(self, max_length=12):
         self.max_length = max_length
 
     def validate(self, password, user=None):

@@ -87,8 +87,8 @@ class RegisterEmailTests(TestCase):
         response = self.client.post(reverse('user:register'), {
             'username': 'newuser',
             'email': 'newuser@example.com',
-            'password1': 'SecurePass123!',
-            'password2': 'SecurePass123!',
+            'password1': 'S3cur3P@s!',
+            'password2': 'S3cur3P@s!',
         })
 
         # Verificar que se envió el correo de verificación
@@ -100,8 +100,8 @@ class RegisterEmailTests(TestCase):
         self.client.post(reverse('user:register'), {
             'username': 'newuser',
             'email': 'newuser@example.com',
-            'password1': 'SecurePass123!',
-            'password2': 'SecurePass123!',
+            'password1': 'S3cur3P@s!',
+            'password2': 'S3cur3P@s!',
         })
 
         user = CustomUser.objects.get(email='newuser@example.com')
@@ -112,8 +112,8 @@ class RegisterEmailTests(TestCase):
         self.client.post(reverse('user:register'), {
             'username': 'newuser',
             'email': 'newuser@example.com',
-            'password1': 'SecurePass123!',
-            'password2': 'SecurePass123!',
+            'password1': 'S3cur3P@s!',
+            'password2': 'S3cur3P@s!',
         })
 
         user = CustomUser.objects.get(email='newuser@example.com')
@@ -381,13 +381,13 @@ class PasswordResetTests(TestCase):
         response = self.client.post(
             reverse('user:password_reset_confirm', kwargs={'token': token.token}),
             {
-                'new_password1': 'NewSecurePass456!',
-                'new_password2': 'NewSecurePass456!',
+                'new_password1': 'N3wP@ss5!x',
+                'new_password2': 'N3wP@ss5!x',
             }
         )
 
         self.user.refresh_from_db()
-        self.assertTrue(self.user.check_password('NewSecurePass456!'))
+        self.assertTrue(self.user.check_password('N3wP@ss5!x'))
 
     def test_password_reset_confirm_marks_token_used(self):
         """Verificar que el token se marca como usado después de cambiar contraseña."""
@@ -396,8 +396,8 @@ class PasswordResetTests(TestCase):
         self.client.post(
             reverse('user:password_reset_confirm', kwargs={'token': token.token}),
             {
-                'new_password1': 'NewSecurePass456!',
-                'new_password2': 'NewSecurePass456!',
+                'new_password1': 'N3wP@ss5!x',
+                'new_password2': 'N3wP@ss5!x',
             }
         )
 
@@ -556,8 +556,8 @@ class AccountActivityEmailTests(TestCase):
         self.client.post(
             reverse('user:password_reset_confirm', kwargs={'token': token.token}),
             {
-                'new_password1': 'NewSecurePass456!',
-                'new_password2': 'NewSecurePass456!',
+                'new_password1': 'N3wP@ss5!x',
+                'new_password2': 'N3wP@ss5!x',
             }
         )
 
@@ -571,8 +571,8 @@ class AccountActivityEmailTests(TestCase):
         self.client.post(
             reverse('user:password_reset_confirm', kwargs={'token': token.token}),
             {
-                'new_password1': 'NewSecurePass456!',
-                'new_password2': 'NewSecurePass456!',
+                'new_password1': 'N3wP@ss5!x',
+                'new_password2': 'N3wP@ss5!x',
             }
         )
 
@@ -585,21 +585,21 @@ class ISO27001PasswordValidatorTests(TestCase):
     """Tests para el validador de contraseñas ISO 27001."""
 
     def setUp(self):
-        self.validator = ISO27001PasswordValidator(min_length=12)
+        self.validator = ISO27001PasswordValidator(min_length=8)
 
     # --- Tests de longitud ---
     def test_password_too_short(self):
-        """Contraseña menor a 12 caracteres debe fallar."""
+        """Contraseña menor a 8 caracteres debe fallar."""
         from django.core.exceptions import ValidationError
         with self.assertRaises(ValidationError) as ctx:
-            self.validator.validate('Abc1!short')
+            self.validator.validate('Ab1!x')
         codes = [e.code for e in ctx.exception.error_list]
         self.assertIn('password_too_short', codes)
 
     def test_password_minimum_length(self):
-        """Contraseña de exactamente 12 caracteres válidos debe pasar."""
+        """Contraseña de exactamente 8 caracteres válidos debe pasar."""
         # 12 chars: mayúscula, minúscula, número, especial, sin secuencias
-        self.validator.validate('Xpm1r9!@Wz3k')  # No debe lanzar excepción
+        self.validator.validate('T3s!Pw@x')  # No debe lanzar excepción
 
     # --- Tests de mayúscula ---
     def test_password_no_uppercase(self):
@@ -642,7 +642,7 @@ class ISO27001PasswordValidatorTests(TestCase):
         """Contraseña con 4+ caracteres iguales consecutivos debe fallar."""
         from django.core.exceptions import ValidationError
         with self.assertRaises(ValidationError) as ctx:
-            self.validator.validate('Aaaaa1234!@bc')
+            self.validator.validate('Aaaaa12!@bc')
         codes = [e.code for e in ctx.exception.error_list]
         self.assertIn('password_repeated_chars', codes)
 
@@ -695,7 +695,7 @@ class ISO27001PasswordValidatorTests(TestCase):
     # --- Tests de contraseña completamente válida ---
     def test_valid_strong_password(self):
         """Una contraseña fuerte que cumple todos los requisitos debe pasar."""
-        self.validator.validate('M!p@ssW0rd#9x')  # No debe lanzar excepción
+        self.validator.validate('M!pW0rd#9x')  # No debe lanzar excepción
 
     def test_multiple_errors_at_once(self):
         """Una contraseña que falla en múltiples reglas debe reportar todos los errores."""
@@ -709,7 +709,7 @@ class ISO27001PasswordValidatorTests(TestCase):
     def test_help_text(self):
         """Verificar que el texto de ayuda contiene las reglas."""
         help_text = self.validator.get_help_text()
-        self.assertIn('12', help_text)
+        self.assertIn('8', help_text)
         self.assertIn('mayúscula', help_text)
         self.assertIn('minúscula', help_text)
         self.assertIn('número', help_text)
@@ -720,22 +720,22 @@ class MaximumLengthValidatorTests(TestCase):
     """Tests para el validador de longitud máxima."""
 
     def setUp(self):
-        self.validator = MaximumLengthValidator(max_length=128)
+        self.validator = MaximumLengthValidator(max_length=12)
 
     def test_password_within_max_length(self):
         """Contraseña dentro del límite máximo debe pasar."""
-        self.validator.validate('A' * 128)  # No debe lanzar excepción
+        self.validator.validate('A' * 12)  # No debe lanzar excepción
 
     def test_password_exceeds_max_length(self):
         """Contraseña que excede el límite máximo debe fallar."""
         from django.core.exceptions import ValidationError
         with self.assertRaises(ValidationError):
-            self.validator.validate('A' * 129)
+            self.validator.validate('A' * 13)
 
     def test_help_text(self):
         """Verificar texto de ayuda del validador de longitud máxima."""
         help_text = self.validator.get_help_text()
-        self.assertIn('128', help_text)
+        self.assertIn('12', help_text)
 
 
 @override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
@@ -758,8 +758,8 @@ class PasswordPolicyIntegrationTests(TestCase):
         self.client.post(reverse('user:register'), {
             'username': 'newuser',
             'email': 'newuser@example.com',
-            'password1': 'M!p@ssW0rd#9x',
-            'password2': 'M!p@ssW0rd#9x',
+            'password1': 'M!pW0rd#9x',
+            'password2': 'M!pW0rd#9x',
         })
         self.assertTrue(CustomUser.objects.filter(email='newuser@example.com').exists())
 
@@ -768,7 +768,7 @@ class PasswordPolicyIntegrationTests(TestCase):
         user = CustomUser.objects.create_user(
             username='testuser',
             email='testuser@example.com',
-            password='M!p@ssW0rd#9x',
+            password='M!pW0rd#9x',
             is_email_verified=True,
         )
         token = PasswordResetToken.objects.create(user=user)
@@ -783,14 +783,14 @@ class PasswordPolicyIntegrationTests(TestCase):
 
         # La contraseña no debe haber cambiado
         user.refresh_from_db()
-        self.assertTrue(user.check_password('M!p@ssW0rd#9x'))
+        self.assertTrue(user.check_password('M!pW0rd#9x'))
 
     def test_password_reset_strong_password_succeeds(self):
         """Cambio de contraseña con contraseña fuerte debe funcionar."""
         user = CustomUser.objects.create_user(
             username='testuser',
             email='testuser@example.com',
-            password='M!p@ssW0rd#9x',
+            password='M!pW0rd#9x',
             is_email_verified=True,
         )
         token = PasswordResetToken.objects.create(user=user)
@@ -798,10 +798,10 @@ class PasswordPolicyIntegrationTests(TestCase):
         self.client.post(
             reverse('user:password_reset_confirm', kwargs={'token': token.token}),
             {
-                'new_password1': 'N3w$ecureP@ss!',
-                'new_password2': 'N3w$ecureP@ss!',
+                'new_password1': 'N3w$P@s!9x',
+                'new_password2': 'N3w$P@s!9x',
             }
         )
 
         user.refresh_from_db()
-        self.assertTrue(user.check_password('N3w$ecureP@ss!'))
+        self.assertTrue(user.check_password('N3w$P@s!9x'))

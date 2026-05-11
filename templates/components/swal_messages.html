@@ -1,10 +1,37 @@
 {% load static %}
 {% if messages %}
-    {% for message in messages %}
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                showSwalAlert('{{ message.tags }}', '{{ message|escapejs }}', "{% static 'img/fondoDC.png' %}");
-            });
-        </script>
-    {% endfor %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var errorMessages = [];
+            var successMessages = [];
+            var warningMessages = [];
+            var infoMessages = [];
+            var bgImage = "{% static 'img/fondoDC.png' %}";
+
+            {% for message in messages %}
+                {% if 'error' in message.tags %}
+                    errorMessages.push('{{ message|escapejs }}');
+                {% elif 'success' in message.tags %}
+                    successMessages.push('{{ message|escapejs }}');
+                {% elif 'warning' in message.tags %}
+                    warningMessages.push('{{ message|escapejs }}');
+                {% else %}
+                    infoMessages.push('{{ message|escapejs }}');
+                {% endif %}
+            {% endfor %}
+
+            if (errorMessages.length > 0) {
+                showSwalAlertList('error', errorMessages, bgImage);
+            }
+            if (successMessages.length > 0) {
+                showSwalAlertList('success', successMessages, bgImage);
+            }
+            if (warningMessages.length > 0) {
+                showSwalAlertList('warning', warningMessages, bgImage);
+            }
+            if (infoMessages.length > 0) {
+                showSwalAlertList('info', infoMessages, bgImage);
+            }
+        });
+    </script>
 {% endif %}

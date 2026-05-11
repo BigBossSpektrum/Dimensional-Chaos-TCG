@@ -238,6 +238,10 @@ def password_reset_confirm(request, token):
             )
             messages.success(request, 'Contraseña actualizada correctamente. Ya puedes iniciar sesión.')
             return redirect('user:login')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, error)
     else:
         form = PasswordResetConfirmForm()
 

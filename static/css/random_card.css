@@ -2,11 +2,12 @@
 
 .cardContainer {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
-  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: flex-start;
   padding-top: 30px;
   padding-bottom: 60px;
+  gap: 20px;
 }
 
 .leftSectionContainer {
@@ -307,4 +308,131 @@
   font-size: 0.65rem;
   color: #777;
   margin-top: 2px;
+}
+
+.setThumb--hidden {
+  display: none;
+}
+
+.setThumb-toggle {
+  margin-top: 8px;
+  background: none;
+  border: 1px solid rgba(255, 204, 0, 0.4);
+  color: #ffcc00;
+  font-family: "Kanit", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 3px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.setThumb-toggle:hover {
+  background: rgba(255, 204, 0, 0.1);
+  transform: scale(1.04);
+}
+
+/* ─── Set Modal ─── */
+
+.setModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.setModal--open {
+  display: flex;
+}
+
+.setModal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.setModal-dialog {
+  position: relative;
+  background: #1e1b18;
+  border: 1px solid rgba(255, 204, 0, 0.25);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 460px;
+  width: 90%;
+  max-height: 70vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+  animation: setModal-in 0.2s ease;
+}
+
+@keyframes setModal-in {
+  from { opacity: 0; transform: scale(0.94) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.setModal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.setModal-title {
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #ffcc00;
+}
+
+.setModal-close {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+
+.setModal-close:hover {
+  color: #fff;
+}
+
+.setModal-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.setModal-grid .setThumb {
+  background: #2e2a26;
+  border-color: #444;
+  min-width: 90px;
+}
+
+.setModal-grid .setThumb-code {
+  color: #eee;
+}
+
+.setModal-grid .setThumb-rarity {
+  color: #999;
+}
+
+.setModal-grid .setThumb:hover {
+  background: #3a3530;
+  border-color: #777;
+  transform: scale(1.04);
+}
+
+.setModal-grid .setThumb--active {
+  border-color: #ffcc00;
+  background: #2e2a26;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.45);
 }

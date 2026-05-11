@@ -1,0 +1,46 @@
+{% if banlist_info %}
+<div class="cardLimited">
+    {% if banlist_info.ban_tcg %}
+    <div class="ban-row">
+        <span class="ban-label">TCG</span>
+        <div class="ban-copies">
+            {% if banlist_info.ban_tcg == "Forbidden" %}
+                <span class="ban-dot ban-dot--inactive"></span>
+                <span class="ban-dot ban-dot--inactive"></span>
+                <span class="ban-dot ban-dot--inactive"></span>
+            {% elif banlist_info.ban_tcg == "Limited" %}
+                <span class="ban-dot ban-dot--limited"></span>
+                <span class="ban-dot ban-dot--inactive"></span>
+                <span class="ban-dot ban-dot--inactive"></span>
+            {% elif banlist_info.ban_tcg == "Semi-Limited" %}
+                <span class="ban-dot ban-dot--semi"></span>
+                <span class="ban-dot ban-dot--semi"></span>
+                <span class="ban-dot ban-dot--inactive"></span>
+            {% endif %}
+        </div>
+        <span class="ban-status-text {% if banlist_info.ban_tcg == 'Forbidden' %}ban-status-text--forbidden{% endif %}">{{ banlist_info.ban_tcg }}</span>
+    </div>
+    {% endif %}
+    {% if banlist_info.ban_ocg %}
+    <div class="ban-row">
+        <span class="ban-label">OCG</span>
+        <div class="ban-copies">
+            {% if banlist_info.ban_ocg == "Forbidden" %}
+                <span class="ban-dot ban-dot--inactive"></span>
+                <span class="ban-dot ban-dot--inactive"></span>
+                <span class="ban-dot ban-dot--inactive"></span>
+            {% elif banlist_info.ban_ocg == "Limited" %}
+                <span class="ban-dot ban-dot--limited"></span>
+                <span class="ban-dot ban-dot--inactive"></span>
+                <span class="ban-dot ban-dot--inactive"></span>
+            {% elif banlist_info.ban_ocg == "Semi-Limited" %}
+                <span class="ban-dot ban-dot--semi"></span>
+                <span class="ban-dot ban-dot--semi"></span>
+                <span class="ban-dot ban-dot--inactive"></span>
+            {% endif %}
+        </div>
+        <span class="ban-status-text {% if banlist_info.ban_ocg == 'Forbidden' %}ban-status-text--forbidden{% endif %}">{{ banlist_info.ban_ocg }}</span>
+    </div>
+    {% endif %}
+</div>
+{% endif %}

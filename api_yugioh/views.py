@@ -61,17 +61,16 @@ def search_cards(request):
         filters = Q()
         
         if query:
-            # Buscar también por set_code dentro del campo q
-            set_code_matches = CardSet.objects.filter(
-                set_code__icontains=query
+            set_matches = CardSet.objects.filter(
+                Q(set_code__icontains=query) | Q(set_name__icontains=query)
             ).values_list('card_id', flat=True)
-            
+
             filters = (
                 Q(name__icontains=query) |
                 Q(archetype__icontains=query) |
                 Q(type__icontains=query) |
                 Q(desc__icontains=query) |
-                Q(card_id__in=set_code_matches)
+                Q(card_id__in=set_matches)
             )
         
         if set_code:

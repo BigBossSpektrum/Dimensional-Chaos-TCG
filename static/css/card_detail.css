@@ -55,3 +55,48 @@
     font-size: 0.85rem;
     color: #fff;
 }
+
+.ban-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+}
+
+.ban-label {
+    font-weight: 700;
+    font-size: 0.75rem;
+    min-width: 36px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ban-copies {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.ban-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.ban-dot--forbidden { background: #e74c3c; box-shadow: 0 0 5px rgba(231, 76, 60, 0.6); }
+.ban-dot--limited   { background: #e67e22; box-shadow: 0 0 5px rgba(230, 126, 34, 0.6); }
+.ban-dot--semi      { background: #f1c40f; box-shadow: 0 0 5px rgba(241, 196, 15, 0.6); }
+.ban-dot--inactive  { background: rgba(255, 255, 255, 0.15); }
+
+.ban-status-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.ban-status-text--forbidden {
+    color: #e74c3c;
+}

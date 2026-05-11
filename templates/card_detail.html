@@ -68,18 +68,7 @@
             </div>
             {% endif %}
 
-            {% if card.banlist_info %}
-            <div class="cardLimited">
-                <div>
-                    {% if card.banlist_info.ban_tcg %}
-                        TCG: {{ card.banlist_info.ban_tcg }}
-                    {% endif %}
-                    {% if card.banlist_info.ban_ocg %}
-                        OCG: {{ card.banlist_info.ban_ocg }}
-                    {% endif %}
-                </div>
-            </div>
-            {% endif %}
+            {% include 'components/ban_status.html' with banlist_info=card.banlist_info %}
             
         </div>
 
